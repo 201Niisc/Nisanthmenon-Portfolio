@@ -8,6 +8,7 @@
 <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -93,10 +94,11 @@ nav a.active::before { opacity: 1; }
 .hamburger span { display: block; width: 18px; height: 1.5px; background: var(--text); transition: all 0.3s; }
 
 /* ── Main Content ────────────────────────────────────────── */
-.main { margin-left: 220px; flex: 1; overflow-y: scroll; height: 100vh; scroll-behavior: smooth; }
+.main { margin-left: 220px; flex: 1; overflow-y: scroll; height: 100vh; scroll-behavior: smooth; scroll-snap-type: y mandatory; }
 
 /* ── Sections ────────────────────────────────────────────── */
 section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; }
+#home, #about { scroll-snap-align: start; scroll-snap-stop: always; }
 
 /* ── Home ────────────────────────────────────────────────── */
 #home { position: relative; overflow: hidden; }
@@ -373,10 +375,11 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
 </div>
 
 <script>
+gsap.registerPlugin(ScrollToPlugin);
 let projects = [];
 
 // ── Load data.json and populate page ─────────────────────
-fetch('data.json')
+fetch('data.json?v=' + Date.now())
   .then(r => r.json())
   .then(data => {
     // Site
@@ -458,7 +461,7 @@ document.querySelectorAll('nav a').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
     const target = document.getElementById(a.dataset.section);
-    mainEl.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+    gsap.to(mainEl, { scrollTo: { y: target.offsetTop }, duration: 1, ease: 'power3.inOut' });
     closeSidebar();
   });
 });
