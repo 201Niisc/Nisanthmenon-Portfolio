@@ -93,10 +93,10 @@ nav a.active::before { opacity: 1; }
 .hamburger span { display: block; width: 18px; height: 1.5px; background: var(--text); transition: all 0.3s; }
 
 /* ── Main Content ────────────────────────────────────────── */
-.main { margin-left: 220px; flex: 1; overflow-y: scroll; height: 100vh; scroll-snap-type: y mandatory; }
+.main { margin-left: 220px; flex: 1; overflow-y: scroll; height: 100vh; scroll-snap-type: y proximity; }
 
 /* ── Sections ────────────────────────────────────────────── */
-section { min-height: 100vh; height: 100vh; padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; scroll-snap-align: start; }
+section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; scroll-snap-align: start; }
 
 /* ── Home ────────────────────────────────────────────────── */
 #home { position: relative; overflow: hidden; }
@@ -140,7 +140,7 @@ section { min-height: 100vh; height: 100vh; padding: 80px 64px; display: flex; f
 .detail-value a:hover { text-decoration: underline; }
 
 /* ── Works ───────────────────────────────────────────────── */
-#works { justify-content: flex-start; padding-top: 80px; scroll-snap-align: none; height: auto; }
+#works { justify-content: flex-start; padding-top: 80px; scroll-snap-align: none; min-height: auto; }
 .works-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 48px; }
 .works-title { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; letter-spacing: -2px; }
 .works-count { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
