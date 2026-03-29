@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Nisanth Menon</title>
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
@@ -15,8 +16,17 @@
   --border: #1e1e1e;
   --text: #e8e8e8;
   --muted: #555;
-  --accent: #c8ff00;
+  --accent: #F95C48;
   --radius: 4px;
+}
+
+:root.light {
+  --bg: #f5f5f0;
+  --surface: #ebebe6;
+  --border: #d8d8d0;
+  --text: #111111;
+  --muted: #888;
+  --accent: #F95C48;
 }
 
 html { scroll-behavior: smooth; }
@@ -24,7 +34,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Clash Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -84,14 +94,13 @@ nav a.active::before { opacity: 1; }
 .main { margin-left: 220px; flex: 1; }
 
 /* ── Sections ────────────────────────────────────────────── */
-section { min-height: 100vh; padding: 80px 64px; display: none; }
-section.active { display: flex; flex-direction: column; justify-content: center; }
+section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; }
 
 /* ── Home ────────────────────────────────────────────────── */
 #home { position: relative; overflow: hidden; }
 .home-title {
   font-size: clamp(3.5rem, 9vw, 9rem);
-  font-weight: 800; letter-spacing: -4px; line-height: 0.9;
+  font-weight: 700; letter-spacing: -4px; line-height: 0.9;
   color: var(--text);
 }
 .home-title .accent { color: var(--accent); }
@@ -118,7 +127,7 @@ section.active { display: flex; flex-direction: column; justify-content: center;
 }
 .about-bio {
   font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.75; color: var(--text);
-  font-weight: 300;
+  font-weight: 400;
 }
 .about-details { display: flex; flex-direction: column; gap: 32px; }
 .detail-block {}
@@ -130,7 +139,7 @@ section.active { display: flex; flex-direction: column; justify-content: center;
 /* ── Works ───────────────────────────────────────────────── */
 #works { justify-content: flex-start; padding-top: 80px; }
 .works-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 48px; }
-.works-title { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; letter-spacing: -2px; }
+.works-title { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; letter-spacing: -2px; }
 .works-count { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
 
 .projects-grid {
@@ -186,7 +195,7 @@ section.active { display: flex; flex-direction: column; justify-content: center;
 .modal-placeholder { width: 100%; aspect-ratio: 16/8; background: linear-gradient(135deg, #1a1a1a, #0f0f0f); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
 .modal-body { padding: 40px; }
 .modal-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; }
-.modal-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -1px; }
+.modal-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; letter-spacing: -1px; }
 .modal-year { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; }
 .modal-close {
   background: none; border: 1px solid var(--border); color: var(--text);
@@ -202,6 +211,40 @@ section.active { display: flex; flex-direction: column; justify-content: center;
   font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
   padding: 5px 14px; border: 1px solid var(--border); border-radius: 20px; color: var(--text);
 }
+
+/* ── Theme toggle switch ─────────────────────────────────── */
+.theme-toggle {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+.theme-toggle-label {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+}
+.switch {
+  position: relative; width: 36px; height: 20px; flex-shrink: 0;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch-track {
+  position: absolute; inset: 0; background: var(--border);
+  border-radius: 20px; cursor: pointer; transition: background 0.25s;
+  border: 1px solid var(--border);
+}
+.switch input:checked + .switch-track { background: var(--accent); border-color: var(--accent); }
+.switch-thumb {
+  position: absolute; top: 3px; left: 3px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--muted); transition: transform 0.25s, background 0.25s;
+  pointer-events: none;
+}
+.switch input:checked ~ .switch-thumb { transform: translateX(16px); background: #fff; }
+
+/* light theme adjustments */
+:root.light .project-placeholder {
+  background: linear-gradient(135deg, #d8d8d0 0%, #e8e8e0 100%);
+}
+:root.light .modal-placeholder {
+  background: linear-gradient(135deg, #d8d8d0, #e8e8e0);
+}
+:root.light .modal-overlay { background: rgba(0,0,0,0.6); }
 
 /* ── Sidebar backdrop (mobile) ───────────────────────────── */
 .sidebar-backdrop {
@@ -253,11 +296,19 @@ section.active { display: flex; flex-direction: column; justify-content: center;
       </div>
     </div>
     <nav>
-      <a href="#" class="active" data-section="home">Home</a>
-      <a href="#" data-section="about">About</a>
-      <a href="#" data-section="works">Works</a>
+      <a href="#home" class="active" data-section="home">Home</a>
+      <a href="#about" data-section="about">About</a>
+      <a href="#works" data-section="works">Works</a>
     </nav>
     <div class="sidebar-footer">
+      <div class="theme-toggle">
+        <label class="switch">
+          <input type="checkbox" id="themeToggle"/>
+          <div class="switch-track"></div>
+          <div class="switch-thumb"></div>
+        </label>
+        <span class="theme-toggle-label" id="themeLabel">Dark</span>
+      </div>
       <a href="mailto:nisanthmenon201@gmail.com">nisanthmenon201@gmail.com</a>
       <span id="sidebar-time"></span>
     </div>
@@ -267,12 +318,12 @@ section.active { display: flex; flex-direction: column; justify-content: center;
   <main class="main">
 
     <!-- Home -->
-    <section id="home" class="active">
+    <section id="home">
       <div>
         <div class="home-title">
-          Architect<br/>&amp; <span class="accent">Computation</span><br/>Designer.
+          Architect<br/>&amp; <span class="accent">Computational</span><br/>Designer.
         </div>
-        <div class="home-sub">Nisanth Menon — Parametric · Generative · Digital Fabrication</div>
+        <div class="home-sub">Nisanth Menon — Parametric · Generative Designer · Digital Fabrication</div>
       </div>
       <div class="home-scroll">Scroll</div>
     </section>
@@ -384,6 +435,7 @@ function renderProjects() {
     </div>
   `).join('');
 }
+renderProjects();
 
 // ── Modal ─────────────────────────────────────────────────
 function openModal(i) {
@@ -406,23 +458,30 @@ function closeModalOnBackdrop(e) {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 // ── Navigation ────────────────────────────────────────────
-function showSection(name) {
-  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-  document.getElementById(name).classList.add('active');
-  document.querySelector(`nav a[data-section="${name}"]`).classList.add('active');
-  if (name === 'works') renderProjects();
-  closeSidebar();
-  // Animate in
-  gsap.fromTo(`#${name}`, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
-}
-
 document.querySelectorAll('nav a').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
-    showSection(a.dataset.section);
+    const target = document.getElementById(a.dataset.section);
+    target.scrollIntoView({ behavior: 'smooth' });
+    closeSidebar();
   });
 });
+
+// Update active nav on scroll
+const sections = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('nav a');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`nav a[data-section="${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+
+sections.forEach(s => observer.observe(s));
 
 // ── Sidebar (mobile) ──────────────────────────────────────
 function toggleSidebar() {
@@ -433,6 +492,24 @@ function closeSidebar() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebarBackdrop').classList.remove('open');
 }
+
+// ── Theme toggle ──────────────────────────────────────────
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+
+function applyTheme(light) {
+  document.documentElement.classList.toggle('light', light);
+  themeToggle.checked = light;
+  themeLabel.textContent = light ? 'Light' : 'Dark';
+}
+
+applyTheme(localStorage.getItem('theme') === 'light');
+
+themeToggle.addEventListener('change', () => {
+  const isLight = themeToggle.checked;
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  applyTheme(isLight);
+});
 
 // ── Live time ─────────────────────────────────────────────
 function updateTime() {
@@ -448,10 +525,8 @@ window.addEventListener('load', () => {
   const count = document.getElementById('loader-count');
   const name = document.getElementById('loader-name');
 
-  // Animate name in
   gsap.to(name, { opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.1 });
 
-  // Count up
   let n = 0;
   const interval = setInterval(() => {
     n += Math.floor(Math.random() * 12) + 3;
@@ -463,7 +538,6 @@ window.addEventListener('load', () => {
           opacity: 0, duration: 0.6, ease: 'power2.inOut',
           onComplete: () => { loader.style.display = 'none'; }
         });
-        // Animate home in
         gsap.fromTo('#home', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.1 });
       }, 300);
     }
