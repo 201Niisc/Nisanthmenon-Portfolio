@@ -1,0 +1,46 @@
+content:
+  - name: site
+    label: Site Settings
+    type: file
+    path: data.json
+    fields:
+      - name: site
+        label: Site
+        type: object
+        fields:
+          - { name: name, label: Full Name, type: string }
+          - { name: initials, label: Initials, type: string }
+          - { name: email, label: Email, type: string }
+          - { name: loaderName, label: Loader Name, type: string }
+      - name: home
+        label: Home Section
+        type: object
+        fields:
+          - { name: titleLine1, label: Title Line 1, type: string }
+          - { name: titleLine2Accent, label: Title Line 2 (Accent), type: string }
+          - { name: titleLine3, label: Title Line 3, type: string }
+          - { name: subtitle, label: Subtitle, type: string }
+      - name: about
+        label: About Section
+        type: object
+        fields:
+          - { name: bio, label: Bio, type: text }
+          - name: specialization
+            label: Specialization
+            type: list
+            itemType: string
+          - { name: tools, label: Tools, type: string }
+      - name: projects
+        label: Projects
+        type: list
+        itemType:
+          type: object
+          fields:
+            - { name: name, label: Project Name, type: string }
+            - { name: year, label: Year, type: string }
+            - { name: desc, label: Description, type: text }
+            - { name: emoji, label: Emoji, type: string }
+            - name: tags
+              label: Tags
+              type: list
+              itemType: string
