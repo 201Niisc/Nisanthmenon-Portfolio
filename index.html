@@ -447,7 +447,9 @@ function renderProjects() {
   document.getElementById('worksCount').textContent = `${projects.length} Projects`;
   grid.innerHTML = projects.map((p, i) => {
     const thumb = p.images && p.images.length
-      ? `<img class="project-img" src="${p.images[0]}" alt="${p.name}" loading="lazy"/>`
+      ? (p.images[0].match(/\.mp4$/i)
+          ? `<video class="project-img" src="${p.images[0]}" autoplay muted loop playsinline></video>`
+          : `<img class="project-img" src="${p.images[0]}" alt="${p.name}" loading="lazy"/>`)
       : `<div class="project-placeholder">${p.emoji}</div>`;
     return `
       <div class="project-card" onclick="openModal(${i})">
@@ -469,14 +471,19 @@ function openModal(i) {
   document.getElementById('modalDesc').textContent = p.desc;
   document.getElementById('modalTags').innerHTML = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
 
-  // Images gallery or placeholder
+  // Images/video gallery or placeholder
   const mediaEl = document.getElementById('modalMedia');
   if (p.images && p.images.length) {
-    const imgs = p.images.map(src => `<img class="modal-gallery-img" src="${src}" alt="${p.name}" loading="lazy"/>`).join('');
+    const items = p.images.map(src => {
+      if (src.match(/\.mp4$/i)) {
+        return `<video class="modal-gallery-img" src="${src}" autoplay muted loop playsinline></video>`;
+      }
+      return `<img class="modal-gallery-img" src="${src}" alt="${p.name}" loading="lazy"/>`;
+    }).join('');
     const dots = p.images.length > 1
       ? `<div class="modal-gallery-dots">${p.images.map((_, idx) => `<div class="modal-gallery-dot${idx === 0 ? ' active' : ''}" onclick="galleryGoTo(${idx})"></div>`).join('')}</div>`
       : '';
-    mediaEl.innerHTML = `<div class="modal-gallery" id="modalGallery">${imgs}</div>${dots}`;
+    mediaEl.innerHTML = `<div class="modal-gallery" id="modalGallery">${items}</div>${dots}`;
     if (p.images.length > 1) {
       document.getElementById('modalGallery').addEventListener('scroll', updateDots);
     }
