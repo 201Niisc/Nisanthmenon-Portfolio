@@ -32,6 +32,7 @@
 
 html { scroll-behavior: smooth; }
 
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -81,7 +82,6 @@ nav a.active::before { opacity: 1; }
 .sidebar-footer { font-size: 0.7rem; color: var(--muted); }
 .sidebar-footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
 .sidebar-footer a:hover { color: var(--text); }
-#sidebar-time { display: block; margin-top: 6px; font-variant-numeric: tabular-nums; }
 
 /* ── Hamburger (mobile) ───────────────────────────────────── */
 .hamburger {
@@ -93,15 +93,15 @@ nav a.active::before { opacity: 1; }
 .hamburger span { display: block; width: 18px; height: 1.5px; background: var(--text); transition: all 0.3s; }
 
 /* ── Main Content ────────────────────────────────────────── */
-.main { margin-left: 220px; flex: 1; }
+.main { margin-left: 220px; flex: 1; overflow-y: scroll; height: 100vh; scroll-snap-type: y mandatory; }
 
 /* ── Sections ────────────────────────────────────────────── */
-section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; }
+section { min-height: 100vh; height: 100vh; padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; scroll-snap-align: start; }
 
 /* ── Home ────────────────────────────────────────────────── */
 #home { position: relative; overflow: hidden; }
 .home-title {
-  font-size: clamp(3.5rem, 9vw, 9rem);
+  font-size: clamp(2.45rem, 6.3vw, 6.3rem);
   font-family: 'Clash Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700; letter-spacing: -2px; line-height: 0.9;
   color: var(--text);
@@ -313,7 +313,6 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
         <span class="theme-toggle-label" id="themeLabel">Dark</span>
       </div>
       <a href="mailto:nisanthmenon201@gmail.com">nisanthmenon201@gmail.com</a>
-      <span id="sidebar-time"></span>
     </div>
   </aside>
 
@@ -461,6 +460,8 @@ function closeModalOnBackdrop(e) {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 // ── Navigation ────────────────────────────────────────────
+const mainEl = document.querySelector('.main');
+
 document.querySelectorAll('nav a').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
@@ -482,7 +483,7 @@ const observer = new IntersectionObserver(entries => {
       if (active) active.classList.add('active');
     }
   });
-}, { threshold: 0.4 });
+}, { root: mainEl, threshold: 0.5 });
 
 sections.forEach(s => observer.observe(s));
 
@@ -513,14 +514,6 @@ themeToggle.addEventListener('change', () => {
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
   applyTheme(isLight);
 });
-
-// ── Live time ─────────────────────────────────────────────
-function updateTime() {
-  const t = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  document.getElementById('sidebar-time').textContent = t;
-}
-updateTime();
-setInterval(updateTime, 1000);
 
 // ── Loader animation ──────────────────────────────────────
 window.addEventListener('load', () => {
