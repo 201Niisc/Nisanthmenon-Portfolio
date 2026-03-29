@@ -27,28 +27,36 @@
       "year": "2024",
       "tags": ["Office Building", "Interior Design", "Facade Design", "Riyadh"],
       "desc": "An innovation hub designed to enhance regional co-working and augmented experience with AR-VR spaces and multilevel office accommodating up to 300 personnel. Located in Riyadh, KSA. GFA: 10,000 sq.m.",
-      "emoji": "🏢"
+      "emoji": "🏢",
+      "images": [],
+      "link": ""
     },
     {
       "name": "Opera House",
       "year": "2024",
       "tags": ["Parametric Design", "Thesis", "Rhino", "Recreational"],
       "desc": "A parametric structure built on the shape of a traditional banana leaf with services and form availing to the cultural and heritage of the state. Located in Kerala. GFA: 3.2 Acres.",
-      "emoji": "🎭"
+      "emoji": "🎭",
+      "images": [],
+      "link": ""
     },
     {
       "name": "Conceptual Project (Rec.laim)",
       "year": "2055",
-      "tags": ["Conceptual Project", "Futuristic", "Group Project", "Sustainability" , "AI Renders"],
+      "tags": ["Conceptual Project", "Futuristic", "Group Project", "Sustainability", "AI Renders"],
       "desc": "By reimagining the historical use of aqueducts in Barcelona, we adopt the same logic to bring water back into the contemporary city. Drawing from precedents such as the Rec Comtal, which once carried river water across long distances to structure urban life, our project reintroduces the river into the site through an aqueduct system extending from Vallbona to the Site (La Sagrera Station Park). This linear intervention transforms infrastructure into public space, using water as a connective, ecological, and cultural spine that links territory, memory, and future urban growth.",
-      "emoji": "🏥"
+      "emoji": "🏥",
+      "images": [],
+      "link": ""
     },
     {
       "name": "Miscellaneous",
       "year": "2022–2024",
       "tags": ["3D Visualisation", "Rendering", "Interior", "Freelance"],
       "desc": "A collection of freelance rendering and 3D visualisation projects including interior renders, facade designs, and rendered plans. Projects span Kerala, Shanghai (Bar Hanok), and Dubai.",
-      "emoji": "✏️"
+      "emoji": "✏️",
+      "images": [],
+      "link": ""
     }
   ]
 }

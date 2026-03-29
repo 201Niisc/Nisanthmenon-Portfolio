@@ -196,8 +196,22 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
   max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto;
   position: relative;
 }
+.modal-gallery {
+  display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.modal-gallery::-webkit-scrollbar { display: none; }
+.modal-gallery-img {
+  flex-shrink: 0; width: 100%; aspect-ratio: 16/8; object-fit: cover;
+  scroll-snap-align: start; background: var(--border);
+}
 .modal-img { width: 100%; aspect-ratio: 16/8; object-fit: cover; background: var(--border); }
 .modal-placeholder { width: 100%; aspect-ratio: 16/8; background: linear-gradient(135deg, #1a1a1a, #0f0f0f); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+.modal-gallery-dots { display: flex; gap: 6px; justify-content: center; padding: 10px 0 0; }
+.modal-gallery-dot {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.2s;
+}
+.modal-gallery-dot.active { background: var(--accent); }
 .modal-body { padding: 40px; }
 .modal-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; }
 .modal-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; letter-spacing: -1px; }
@@ -216,6 +230,14 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
   font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
   padding: 5px 14px; border: 1px solid var(--border); border-radius: 20px; color: var(--text);
 }
+.modal-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--accent); text-decoration: none; border: 1px solid var(--accent);
+  padding: 8px 20px; border-radius: var(--radius); transition: background 0.2s, color 0.2s;
+  margin-top: 8px;
+}
+.modal-link:hover { background: var(--accent); color: #fff; }
 
 /* ── Theme toggle switch ─────────────────────────────────── */
 .theme-toggle {
@@ -370,6 +392,7 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
         <div class="modal-tags-label">Tools & Methods</div>
         <div class="modal-tags" id="modalTags"></div>
       </div>
+      <div id="modalLinkWrap"></div>
     </div>
   </div>
 </div>
@@ -422,16 +445,20 @@ fetch('data.json?v=' + Date.now())
 function renderProjects() {
   const grid = document.getElementById('projectsGrid');
   document.getElementById('worksCount').textContent = `${projects.length} Projects`;
-  grid.innerHTML = projects.map((p, i) => `
-    <div class="project-card" onclick="openModal(${i})">
-      <div class="project-placeholder">${p.emoji}</div>
-      <div class="project-overlay">
-        <div class="project-name">${p.name}</div>
-        <div class="project-year">${p.year}</div>
-        <div class="project-tags">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
-      </div>
-    </div>
-  `).join('');
+  grid.innerHTML = projects.map((p, i) => {
+    const thumb = p.images && p.images.length
+      ? `<img class="project-img" src="${p.images[0]}" alt="${p.name}" loading="lazy"/>`
+      : `<div class="project-placeholder">${p.emoji}</div>`;
+    return `
+      <div class="project-card" onclick="openModal(${i})">
+        ${thumb}
+        <div class="project-overlay">
+          <div class="project-name">${p.name}</div>
+          <div class="project-year">${p.year}</div>
+          <div class="project-tags">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
+        </div>
+      </div>`;
+  }).join('');
 }
 
 // ── Modal ─────────────────────────────────────────────────
@@ -441,13 +468,46 @@ function openModal(i) {
   document.getElementById('modalYear').textContent = p.year;
   document.getElementById('modalDesc').textContent = p.desc;
   document.getElementById('modalTags').innerHTML = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
-  document.getElementById('modalMedia').innerHTML = `<div class="modal-placeholder">${p.emoji}</div>`;
+
+  // Images gallery or placeholder
+  const mediaEl = document.getElementById('modalMedia');
+  if (p.images && p.images.length) {
+    const imgs = p.images.map(src => `<img class="modal-gallery-img" src="${src}" alt="${p.name}" loading="lazy"/>`).join('');
+    const dots = p.images.length > 1
+      ? `<div class="modal-gallery-dots">${p.images.map((_, idx) => `<div class="modal-gallery-dot${idx === 0 ? ' active' : ''}" onclick="galleryGoTo(${idx})"></div>`).join('')}</div>`
+      : '';
+    mediaEl.innerHTML = `<div class="modal-gallery" id="modalGallery">${imgs}</div>${dots}`;
+    if (p.images.length > 1) {
+      document.getElementById('modalGallery').addEventListener('scroll', updateDots);
+    }
+  } else {
+    mediaEl.innerHTML = `<div class="modal-placeholder">${p.emoji}</div>`;
+  }
+
+  // Link
+  const linkWrap = document.getElementById('modalLinkWrap');
+  linkWrap.innerHTML = p.link ? `<a class="modal-link" href="${p.link}" target="_blank" rel="noopener">View Project →</a>` : '';
+
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  mainEl.style.overflow = 'hidden';
 }
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
+  mainEl.style.overflow = '';
+}
+
+function galleryGoTo(idx) {
+  const g = document.getElementById('modalGallery');
+  if (!g) return;
+  g.scrollTo({ left: g.clientWidth * idx, behavior: 'smooth' });
+}
+function updateDots() {
+  const g = document.getElementById('modalGallery');
+  if (!g) return;
+  const idx = Math.round(g.scrollLeft / g.clientWidth);
+  document.querySelectorAll('.modal-gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
 }
 function closeModalOnBackdrop(e) {
   if (e.target === document.getElementById('modalOverlay')) closeModal();
