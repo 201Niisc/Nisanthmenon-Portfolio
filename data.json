@@ -1,0 +1,54 @@
+{
+  "site": {
+    "name": "Nisanth Menon",
+    "initials": "NM",
+    "email": "nisanthmenon201@gmail.com",
+    "loaderName": "Nisanth Menon"
+  },
+  "home": {
+    "titleLine1": "Architect",
+    "titleLine2Accent": "Computational",
+    "titleLine3": "Designer.",
+    "subtitle": "Nisanth Menon — Parametric · Generative Designer · Digital Fabrication"
+  },
+  "about": {
+    "bio": "Computational design student specializing in parametric modeling and generative workflows using Rhino and Grasshopper. Interested in algorithmic design, digital fabrication, and integrating automation and computer vision into architectural systems. Eager to contribute to projects that challenge the boundaries of design while prioritizing sustainability and human-centered approaches.",
+    "specialization": [
+      "Parametric Modeling",
+      "Generative Workflows",
+      "Digital Fabrication",
+      "Computer Vision in Architecture"
+    ],
+    "tools": "Rhino · Grasshopper · Python · C#"
+  },
+  "projects": [
+    {
+      "name": "Innovation Hub",
+      "year": "2024",
+      "tags": ["Office Building", "Interior Design", "Facade Design", "Riyadh"],
+      "desc": "An innovation hub designed to enhance regional co-working and augmented experience with AR-VR spaces and multilevel office accommodating up to 300 personnel. Located in Riyadh, KSA. GFA: 10,000 sq.m.",
+      "emoji": "🏢"
+    },
+    {
+      "name": "Opera House",
+      "year": "2024",
+      "tags": ["Parametric Design", "Thesis", "Rhino", "Recreational"],
+      "desc": "A parametric structure built on the shape of a traditional banana leaf with services and form availing to the cultural and heritage of the state. Located in Kerala. GFA: 3.2 Acres.",
+      "emoji": "🎭"
+    },
+    {
+      "name": "Trauma Care Centre",
+      "year": "2023",
+      "tags": ["Healthcare", "AutoCAD", "3D Modelling", "New Delhi"],
+      "desc": "A 3-block level 3 trauma care centre, designed to value the efficiency and circulation of the services within. Aesthetically improved to give a sense of calmness to the people. Located in New Delhi, India.",
+      "emoji": "🏥"
+    },
+    {
+      "name": "Miscellaneous",
+      "year": "2022–2024",
+      "tags": ["3D Visualisation", "Rendering", "Interior", "Freelance"],
+      "desc": "A collection of freelance rendering and 3D visualisation projects including interior renders, facade designs, and rendered plans. Projects span Kerala, Shanghai (Bar Hanok), and Dubai.",
+      "emoji": "✏️"
+    }
+  ]
+}
