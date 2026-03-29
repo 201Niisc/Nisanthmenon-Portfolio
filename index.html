@@ -1,11 +1,474 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nisanth Menon — Portfolio</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nisanth Menon</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --border: #1e1e1e;
+  --text: #e8e8e8;
+  --muted: #555;
+  --accent: #c8ff00;
+  --radius: 4px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Loader ──────────────────────────────────────────────── */
+#loader {
+  position: fixed; inset: 0; background: var(--bg);
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 40px 48px; z-index: 1000;
+}
+#loader-name { font-size: clamp(2rem, 6vw, 5rem); font-weight: 700; letter-spacing: -2px; opacity: 0; }
+#loader-count { font-size: clamp(2rem, 6vw, 5rem); font-weight: 700; letter-spacing: -2px; }
+#loader.done { pointer-events: none; }
+
+/* ── Layout ──────────────────────────────────────────────── */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+.sidebar {
+  position: fixed; top: 0; left: 0; height: 100vh; width: 220px;
+  background: var(--bg); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 40px 32px; z-index: 100;
+}
+.sidebar-logo { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); }
+.sidebar-logo span { color: var(--muted); display: block; font-weight: 400; font-size: 0.72rem; margin-top: 4px; letter-spacing: 0.05em; }
+
+nav { display: flex; flex-direction: column; gap: 6px; }
+nav a {
+  font-size: 0.82rem; font-weight: 500; color: var(--muted);
+  text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 6px 0; transition: color 0.2s; position: relative;
+}
+nav a::before {
+  content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%);
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+  opacity: 0; transition: opacity 0.2s;
+}
+nav a:hover, nav a.active { color: var(--text); }
+nav a.active::before { opacity: 1; }
+
+.sidebar-footer { font-size: 0.7rem; color: var(--muted); }
+.sidebar-footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.sidebar-footer a:hover { color: var(--text); }
+#sidebar-time { display: block; margin-top: 6px; font-variant-numeric: tabular-nums; }
+
+/* ── Hamburger (mobile) ───────────────────────────────────── */
+.hamburger {
+  display: none; position: fixed; top: 20px; left: 20px; z-index: 200;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  width: 40px; height: 40px; flex-direction: column; align-items: center;
+  justify-content: center; gap: 5px; cursor: pointer;
+}
+.hamburger span { display: block; width: 18px; height: 1.5px; background: var(--text); transition: all 0.3s; }
+
+/* ── Main Content ────────────────────────────────────────── */
+.main { margin-left: 220px; flex: 1; }
+
+/* ── Sections ────────────────────────────────────────────── */
+section { min-height: 100vh; padding: 80px 64px; display: none; }
+section.active { display: flex; flex-direction: column; justify-content: center; }
+
+/* ── Home ────────────────────────────────────────────────── */
+#home { position: relative; overflow: hidden; }
+.home-title {
+  font-size: clamp(3.5rem, 9vw, 9rem);
+  font-weight: 800; letter-spacing: -4px; line-height: 0.9;
+  color: var(--text);
+}
+.home-title .accent { color: var(--accent); }
+.home-sub {
+  margin-top: 48px; font-size: 0.9rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.15em; font-weight: 500;
+}
+.home-scroll {
+  position: absolute; bottom: 40px; right: 64px;
+  font-size: 0.7rem; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.15em; writing-mode: vertical-rl;
+  display: flex; align-items: center; gap: 10px;
+}
+.home-scroll::before {
+  content: ''; display: block; width: 1px; height: 60px; background: var(--muted);
+}
+
+/* ── About ───────────────────────────────────────────────── */
+#about { gap: 80px; }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.about-label {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em;
+  color: var(--muted); margin-bottom: 24px; font-weight: 600;
+}
+.about-bio {
+  font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.75; color: var(--text);
+  font-weight: 300;
+}
+.about-details { display: flex; flex-direction: column; gap: 32px; }
+.detail-block {}
+.detail-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 10px; }
+.detail-value { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
+.detail-value a { color: var(--accent); text-decoration: none; }
+.detail-value a:hover { text-decoration: underline; }
+
+/* ── Works ───────────────────────────────────────────────── */
+#works { justify-content: flex-start; padding-top: 80px; }
+.works-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 48px; }
+.works-title { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; letter-spacing: -2px; }
+.works-count { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+.projects-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+}
+.project-card {
+  background: var(--surface); aspect-ratio: 4/3; position: relative;
+  overflow: hidden; cursor: pointer; border: 1px solid var(--border);
+}
+.project-card:nth-child(3n+1) { grid-column: span 2; aspect-ratio: 16/7; }
+.project-img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: var(--border);
+}
+.project-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.project-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.7);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 28px; opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.project-card:hover .project-overlay { opacity: 1; }
+.project-card:hover .project-img,
+.project-card:hover .project-placeholder { transform: scale(1.04); }
+.project-name { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.project-year { font-size: 0.72rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; }
+.project-tags { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+.project-tag {
+  font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 3px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px;
+  color: rgba(255,255,255,0.6);
+}
+
+/* ── Modal ───────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+  z-index: 500; display: none; align-items: center; justify-content: center;
+  padding: 40px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto;
+  position: relative;
+}
+.modal-img { width: 100%; aspect-ratio: 16/8; object-fit: cover; background: var(--border); }
+.modal-placeholder { width: 100%; aspect-ratio: 16/8; background: linear-gradient(135deg, #1a1a1a, #0f0f0f); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+.modal-body { padding: 40px; }
+.modal-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; }
+.modal-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -1px; }
+.modal-year { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; }
+.modal-close {
+  background: none; border: 1px solid var(--border); color: var(--text);
+  width: 36px; height: 36px; border-radius: var(--radius); cursor: pointer;
+  font-size: 1.1rem; flex-shrink: 0; transition: border-color 0.2s;
+}
+.modal-close:hover { border-color: var(--text); }
+.modal-desc { font-size: 0.95rem; line-height: 1.8; color: var(--muted); margin-bottom: 32px; }
+.modal-tags-section { margin-bottom: 24px; }
+.modal-tags-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 10px; }
+.modal-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.modal-tag {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 5px 14px; border: 1px solid var(--border); border-radius: 20px; color: var(--text);
+}
+
+/* ── Sidebar backdrop (mobile) ───────────────────────────── */
+.sidebar-backdrop {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99;
+}
+.sidebar-backdrop.open { display: block; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; border-right: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 4px 0 40px rgba(0,0,0,0.5); }
+  .main { margin-left: 0; }
+  section { padding: 80px 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card:nth-child(3n+1) { grid-column: span 1; aspect-ratio: 4/3; }
+  .home-title { letter-spacing: -2px; }
+  .home-scroll { display: none; }
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .modal { max-height: 92vh; border-radius: 12px 12px 0 0; }
+  .modal-body { padding: 24px; }
+}
+</style>
 </head>
 <body>
-  <h1>Coming soon</h1>
+
+<!-- Loader -->
+<div id="loader">
+  <div id="loader-name">Nisanth Menon</div>
+  <div id="loader-count">0</div>
+</div>
+
+<!-- Sidebar backdrop (mobile) -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+<!-- Hamburger -->
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+  <span></span><span></span><span></span>
+</button>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div>
+      <div class="sidebar-logo">
+        NM
+        <span>Portfolio</span>
+      </div>
+    </div>
+    <nav>
+      <a href="#" class="active" data-section="home">Home</a>
+      <a href="#" data-section="about">About</a>
+      <a href="#" data-section="works">Works</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="mailto:nisanthmenon201@gmail.com">nisanthmenon201@gmail.com</a>
+      <span id="sidebar-time"></span>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Home -->
+    <section id="home" class="active">
+      <div>
+        <div class="home-title">
+          Architect<br/>&amp; <span class="accent">Computation</span><br/>Designer.
+        </div>
+        <div class="home-sub">Nisanth Menon — Parametric · Generative · Digital Fabrication</div>
+      </div>
+      <div class="home-scroll">Scroll</div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <div class="about-grid">
+        <div>
+          <div class="about-label">About</div>
+          <p class="about-bio">Computational design student specializing in parametric modeling and generative workflows using Rhino and Grasshopper. Interested in algorithmic design, digital fabrication, and integrating automation and computer vision into architectural systems. Eager to contribute to projects that challenge the boundaries of design while prioritizing sustainability and human-centered approaches.</p>
+        </div>
+        <div class="about-details">
+          <div class="detail-block">
+            <div class="detail-title">Specialization</div>
+            <div class="detail-value">Parametric Modeling<br/>Generative Workflows<br/>Digital Fabrication<br/>Computer Vision in Architecture</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-title">Tools</div>
+            <div class="detail-value">Rhino · Grasshopper · Python · C#</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-title">Contact</div>
+            <div class="detail-value"><a href="mailto:nisanthmenon201@gmail.com">nisanthmenon201@gmail.com</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Works -->
+    <section id="works">
+      <div class="works-header">
+        <div class="works-title">Works</div>
+        <div class="works-count" id="worksCount">— Projects</div>
+      </div>
+      <div class="projects-grid" id="projectsGrid"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBackdrop(event)">
+  <div class="modal" id="modal">
+    <div id="modalMedia"></div>
+    <div class="modal-body">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modalTitle"></div>
+          <div class="modal-year" id="modalYear"></div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-tags-section">
+        <div class="modal-tags-label">Tools & Methods</div>
+        <div class="modal-tags" id="modalTags"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Projects data ─────────────────────────────────────────
+const projects = [
+  {
+    id: 1, name: "Project Title", year: "2024",
+    tags: ["Grasshopper", "Parametric", "Rhino"],
+    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
+    emoji: "🏗️"
+  },
+  {
+    id: 2, name: "Project Title", year: "2024",
+    tags: ["Python", "Generative", "Digital Fabrication"],
+    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
+    emoji: "🔷"
+  },
+  {
+    id: 3, name: "Project Title", year: "2023",
+    tags: ["Computer Vision", "Automation", "Rhino"],
+    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
+    emoji: "🌐"
+  },
+  {
+    id: 4, name: "Project Title", year: "2023",
+    tags: ["Grasshopper", "Structural", "Parametric"],
+    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
+    emoji: "📐"
+  },
+  {
+    id: 5, name: "Project Title", year: "2023",
+    tags: ["Fabrication", "CNC", "Generative"],
+    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
+    emoji: "⬡"
+  },
+];
+
+// ── Render projects ───────────────────────────────────────
+function renderProjects() {
+  const grid = document.getElementById('projectsGrid');
+  document.getElementById('worksCount').textContent = `${projects.length} Projects`;
+  grid.innerHTML = projects.map((p, i) => `
+    <div class="project-card" onclick="openModal(${i})">
+      <div class="project-placeholder">${p.emoji}</div>
+      <div class="project-overlay">
+        <div class="project-name">${p.name}</div>
+        <div class="project-year">${p.year}</div>
+        <div class="project-tags">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Modal ─────────────────────────────────────────────────
+function openModal(i) {
+  const p = projects[i];
+  document.getElementById('modalTitle').textContent = p.name;
+  document.getElementById('modalYear').textContent = p.year;
+  document.getElementById('modalDesc').textContent = p.desc;
+  document.getElementById('modalTags').innerHTML = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+  document.getElementById('modalMedia').innerHTML = `<div class="modal-placeholder">${p.emoji}</div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOnBackdrop(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Navigation ────────────────────────────────────────────
+function showSection(name) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  document.querySelector(`nav a[data-section="${name}"]`).classList.add('active');
+  if (name === 'works') renderProjects();
+  closeSidebar();
+  // Animate in
+  gsap.fromTo(`#${name}`, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+}
+
+document.querySelectorAll('nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    showSection(a.dataset.section);
+  });
+});
+
+// ── Sidebar (mobile) ──────────────────────────────────────
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarBackdrop').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarBackdrop').classList.remove('open');
+}
+
+// ── Live time ─────────────────────────────────────────────
+function updateTime() {
+  const t = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  document.getElementById('sidebar-time').textContent = t;
+}
+updateTime();
+setInterval(updateTime, 1000);
+
+// ── Loader animation ──────────────────────────────────────
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
+  const count = document.getElementById('loader-count');
+  const name = document.getElementById('loader-name');
+
+  // Animate name in
+  gsap.to(name, { opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.1 });
+
+  // Count up
+  let n = 0;
+  const interval = setInterval(() => {
+    n += Math.floor(Math.random() * 12) + 3;
+    if (n >= 100) { n = 100; clearInterval(interval); }
+    count.textContent = n;
+    if (n === 100) {
+      setTimeout(() => {
+        gsap.to(loader, {
+          opacity: 0, duration: 0.6, ease: 'power2.inOut',
+          onComplete: () => { loader.style.display = 'none'; }
+        });
+        // Animate home in
+        gsap.fromTo('#home', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.1 });
+      }, 300);
+    }
+  }, 40);
+});
+</script>
 </body>
 </html>
