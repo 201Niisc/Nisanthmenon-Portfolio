@@ -140,7 +140,7 @@ section { min-height: 100vh; height: 100vh; padding: 80px 64px; display: flex; f
 .detail-value a:hover { text-decoration: underline; }
 
 /* ── Works ───────────────────────────────────────────────── */
-#works { justify-content: flex-start; padding-top: 80px; }
+#works { justify-content: flex-start; padding-top: 80px; scroll-snap-align: none; height: auto; }
 .works-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 48px; }
 .works-title { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; letter-spacing: -2px; }
 .works-count { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
@@ -391,34 +391,28 @@ section { min-height: 100vh; height: 100vh; padding: 80px 64px; display: flex; f
 // ── Projects data ─────────────────────────────────────────
 const projects = [
   {
-    id: 1, name: "Project Title", year: "2024",
-    tags: ["Grasshopper", "Parametric", "Rhino"],
-    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
-    emoji: "🏗️"
+    id: 1, name: "Innovation Hub", year: "2024",
+    tags: ["Office Building", "Interior Design", "Facade Design", "Riyadh"],
+    desc: "An innovation hub designed to enhance regional co-working and augmented experience with AR-VR spaces and multilevel office accommodating up to 300 personnel. Located in Riyadh, KSA. GFA: 10,000 sq.m.",
+    emoji: "🏢"
   },
   {
-    id: 2, name: "Project Title", year: "2024",
-    tags: ["Python", "Generative", "Digital Fabrication"],
-    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
-    emoji: "🔷"
+    id: 2, name: "Opera House", year: "2024",
+    tags: ["Parametric Design", "Thesis", "Rhino", "Recreational"],
+    desc: "A parametric structure built on the shape of a traditional banana leaf with services and form availing to the cultural and heritage of the state. Located in Kerala. GFA: 3.2 Acres.",
+    emoji: "🎭"
   },
   {
-    id: 3, name: "Project Title", year: "2023",
-    tags: ["Computer Vision", "Automation", "Rhino"],
-    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
-    emoji: "🌐"
+    id: 3, name: "Trauma Care Centre", year: "2023",
+    tags: ["Healthcare", "AutoCAD", "3D Modelling", "New Delhi"],
+    desc: "A 3-block level 3 trauma care centre, designed to value the efficiency and circulation of the services within. Aesthetically improved to give a sense of calmness to the people. Located in New Delhi, India.",
+    emoji: "🏥"
   },
   {
-    id: 4, name: "Project Title", year: "2023",
-    tags: ["Grasshopper", "Structural", "Parametric"],
-    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
-    emoji: "📐"
-  },
-  {
-    id: 5, name: "Project Title", year: "2023",
-    tags: ["Fabrication", "CNC", "Generative"],
-    desc: "A short description of this project goes here. Describe the concept, methods used, and outcome.",
-    emoji: "⬡"
+    id: 4, name: "Miscellaneous", year: "2022–2024",
+    tags: ["3D Visualisation", "Rendering", "Interior", "Freelance"],
+    desc: "A collection of freelance rendering and 3D visualisation projects including interior renders, facade designs, and rendered plans. Projects span Kerala, Shanghai (Bar Hanok), and Dubai.",
+    emoji: "✏️"
   },
 ];
 
