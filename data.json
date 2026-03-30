@@ -89,8 +89,7 @@
         "Gaudi",
         "Podium Design"
       ],
-      "desc": "A collection of freelance rendering and 3D visualisation projects including interior renders, facade designs, and rendered plans. Projects span Kerala, Shanghai (Bar Hanok), and Dubai.",
-      "emoji": "✏️",
+      "desc": "The tower is study of organic geometries associated with Antoni Gaudí that can be reinterpreted through contemporary computational design. Using parametric modeling techniques, the project translates principles such as radial symmetry, ruled surfaces, and growth based geometries into algorithmically generated forms that evolve through controlled variation rather than historical replication. The resulting series of abstract monochromatic artifacts ranging from radial star forms to columnar and vessel like typologies explores the intersection of geometry form and light positioning each piece as part of an ongoing investigation into post natural form digital craft and the evolving role of authorship in generative design.",
       "images": [
         "assets/gaudi-centenary-tower/Thumbnail.gif",
         "assets/gaudi-centenary-tower/04.3_Final_Param.gif",
@@ -98,7 +97,7 @@
         "assets/gaudi-centenary-tower/04_Final_Phase_Frames.gif"
       ],
       "sketchfab": "https://sketchfab.com/3d-models/sketchfab-model-2137e43797834b01993f660c2d8ffb1b",
-      "link": "",
+      "link": "https://blog.iaac.net/the-gaudi-tower-podium/",
       "folder": "assets/gaudi-centenary-tower"
     },
     {
