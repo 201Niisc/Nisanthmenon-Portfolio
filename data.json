@@ -25,46 +25,106 @@
     {
       "name": "Innovation Hub",
       "year": "2024",
-      "tags": ["Office Building", "Interior Design", "Facade Design", "Riyadh"],
+      "tags": [
+        "Office Building",
+        "Interior Design",
+        "Facade Design",
+        "Riyadh"
+      ],
       "desc": "An innovation hub designed to enhance regional co-working and augmented experience with AR-VR spaces and multilevel office accommodating up to 300 personnel. Located in Riyadh, KSA. GFA: 10,000 sq.m.",
       "emoji": "🏢",
       "images": [],
+      "sketchfab": "",
       "link": "",
       "folder": "assets/innovation-hub"
     },
     {
       "name": "Opera House",
       "year": "2024",
-      "tags": ["Parametric Design", "Thesis", "Rhino", "Recreational"],
+      "tags": [
+        "Parametric Design",
+        "Thesis",
+        "Rhino",
+        "Recreational"
+      ],
       "desc": "A parametric structure built on the shape of a traditional banana leaf with services and form availing to the cultural and heritage of the state. Located in Kerala. GFA: 3.2 Acres.",
       "emoji": "🎭",
       "images": [],
+      "sketchfab": "",
       "link": "",
       "folder": "assets/opera-house"
     },
     {
       "name": "Rec.laim - Conceptual Housing Project",
-      "year": "2055",
-      "tags": ["Conceptual Project", "Futuristic", "Master's Project", "Group Project", "Sustainability", "AI Renders"],
-      "desc": "By reimagining the historical use of aqueducts in Barcelona, we adopt the same logic to bring water back into the contemporary city. Drawing from precedents such as the Rec Comtal, which once carried river water across long distances to structure urban life, our project reintroduces the river into the site through an aqueduct system extending from Vallbona to the Site (La Sagrera Station Park). This linear intervention transforms infrastructure into public space, using water as a connective, ecological, and cultural spine that links territory, memory, and future urban growth.",
-      "images": 
-      [
-        "assets/rec-laim/Bird Eye View.jpeg",
-        "assets/rec-laim/Final Animation design formation 1.mp4"
+      "year": "2055 - Conceptual",
+      "tags": [
+        "Conceptual Project",
+        "Futuristic",
+        "Master's Project",
+        "Group Project",
+        "Sustainability",
+        "AI Renders"
       ],
-
+      "desc": "By reimagining the historical use of aqueducts in Barcelona, we adopt the same logic to bring water back into the contemporary city. Drawing from precedents such as the Rec Comtal, which once carried river water across long distances to structure urban life, our project reintroduces the river into the site through an aqueduct system extending from Vallbona to the Site (La Sagrera Station Park). This linear intervention transforms infrastructure into public space, using water as a connective, ecological, and cultural spine that links territory, memory, and future urban growth.",
+      "images": [
+        "assets/rec-laim/Bird Eye View.jpeg",
+        "assets/rec-laim/Final Animation design formation 1.mp4",
+        "assets/rec-laim/EXPLODED ISO copy.jpg",
+        "assets/rec-laim/Human Eye Veiw.png",
+        "assets/rec-laim/Rec Comtal Path View.jpeg",
+        "assets/rec-laim/inner view.jpeg",
+        "assets/rec-laim/perspective section.png"
+      ],
+      "sketchfab": "",
       "link": "https://blog.iaac.net/rec-laim/",
       "folder": "assets/rec-laim"
     },
     {
-      "name": "Miscellaneous",
-      "year": "2022–2024",
-      "tags": ["3D Visualisation", "Rendering", "Interior", "Freelance"],
+      "name": "Gaudi Centenary Tower",
+      "year": "Conceptual",
+      "tags": [
+        "Grasshopper",
+        "Rendering",
+        "Algorithmic",
+        "Gaudi",
+        "Podium Design"
+      ],
       "desc": "A collection of freelance rendering and 3D visualisation projects including interior renders, facade designs, and rendered plans. Projects span Kerala, Shanghai (Bar Hanok), and Dubai.",
       "emoji": "✏️",
-      "images": [],
+      "images": [
+        "assets/gaudi-centenary-tower/Thumbnail.gif",
+        "assets/gaudi-centenary-tower/04.3_Final_Param.gif",
+        "assets/gaudi-centenary-tower/04.4_Final_Param.gif",
+        "assets/gaudi-centenary-tower/04_Final_Phase_Frames.gif"
+      ],
+      "sketchfab": "https://sketchfab.com/3d-models/sketchfab-model-2137e43797834b01993f660c2d8ffb1b",
       "link": "",
-      "folder": "assets/miscellaneous"
+      "folder": "assets/gaudi-centenary-tower"
+    },
+    {
+      "name": "Rooftop Pavilion",
+      "year": "Conceptual",
+      "tags": [
+        "Grasshopper",
+        "Parametric",
+        "Kangaroo",
+        "Lady Bug",
+        "Fabrication"
+      ],
+      "desc": "Good Day Sunshine is a lightweight canopy that shapes space through light and structure. A flowing membrane stretches between fixed frames, forming a series of vaulted bays that create shade while allowing controlled openings for sunlight to pass through. The surface is organized by a triangulated structural network that gives strength to the thin skin and defines moments of enclosure and openness. As the sun moves, light filters through the patterned openings, casting shifting shadows and creating a dynamic atmosphere beneath the canopy.",
+      "images": [
+        "assets/rooftop-pavilion/1.png",
+        "assets/rooftop-pavilion/6.png",
+        "assets/rooftop-pavilion/Plane.png",
+        "assets/rooftop-pavilion/Section 2.png",
+        "assets/rooftop-pavilion/Section 3.png",
+        "assets/rooftop-pavilion/final turntable.gif",
+        "assets/rooftop-pavilion/formation.gif",
+        "assets/rooftop-pavilion/node connection.gif"
+      ],
+      "sketchfab": "",
+      "link": "https://blog.iaac.net/good-day-sunshine/",
+      "folder": "assets/rooftop-pavilion"
     }
   ]
 }

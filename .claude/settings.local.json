@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx --version)",
+      "Bash(netstat -ano)",
+      "Bash(python server.py)",
+      "Bash(curl -s -o /tmp/nisanth_page.html -w \"%{http_code}\" --max-time 15 https://nisanthmenon.me)",
+      "WebFetch(domain:nisanthmenon.me)",
+      "Bash(curl -s -o /tmp/nisanth_https.html -w \"%{http_code}|%{url_effective}|%{redirect_url}\" -L --max-time 15 \"https://www.nisanthmenon.me\")",
+      "Bash(echo \"EXIT:$?\")",
+      "WebFetch(domain:www.nisanthmenon.me)",
+      "Bash(curl -sk -o /tmp/nisanth_https.html -w \"HTTP_STATUS:%{http_code}\\\\nFINAL_URL:%{url_effective}\\\\nTIME:%{time_total}\" -L --max-time 15 \"https://www.nisanthmenon.me\")",
+      "Bash(curl -sk -o /dev/null -w \"HTTP_STATUS:%{http_code}\\\\nFINAL_URL:%{url_effective}\" -L --max-time 15 \"http://www.nisanthmenon.me\")",
+      "Bash(dig _github-pages-challenge-201Niisc.nisanthmenon.me +nostats +nocomments +nocmd TXT)",
+      "Bash(nslookup -type=TXT _github-pages-challenge-201Niisc.nisanthmenon.me)",
+      "Bash(gh run:*)",
+      "Bash(python scripts/update_images.py)",
+      "Bash(python -c \"import json; d=json.load\\(open\\(''data.json''\\)\\); [print\\(i\\) for i in d[''projects''][-1][''images'']]\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\(''data.json'', encoding=''utf-8''\\)\\); [print\\(i\\) for i in d[''projects''][-1][''images'']]\")"
+    ]
+  }
+}

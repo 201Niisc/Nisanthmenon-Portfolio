@@ -149,16 +149,17 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
 
 .projects-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+  align-items: start;
 }
 .project-card {
-  background: var(--surface); aspect-ratio: 4/3; position: relative;
+  background: var(--surface); position: relative;
   overflow: hidden; cursor: pointer; border: 1px solid var(--border);
+  aspect-ratio: 4/3;
 }
-.project-card:nth-child(3n+1) { grid-column: span 2; aspect-ratio: 16/7; }
 .project-img {
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  background: var(--border);
+  background: #fff;
 }
 .project-placeholder {
   width: 100%; height: 100%;
@@ -196,6 +197,10 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
   max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto;
   position: relative;
 }
+.modal-sketchfab {
+  width: 100%; aspect-ratio: 16/9; border: none; display: block;
+}
+
 .modal-gallery {
   display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -203,7 +208,7 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
 .modal-gallery::-webkit-scrollbar { display: none; }
 .modal-gallery-img {
   flex-shrink: 0; width: 100%; aspect-ratio: 16/8; object-fit: cover;
-  scroll-snap-align: start; background: var(--border);
+  scroll-snap-align: start; background: #fff;
 }
 .modal-img { width: 100%; aspect-ratio: 16/8; object-fit: cover; background: var(--border); }
 .modal-placeholder { width: 100%; aspect-ratio: 16/8; background: linear-gradient(135deg, #1a1a1a, #0f0f0f); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
@@ -285,6 +290,29 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
 }
 :root.light .modal-overlay { background: rgba(0,0,0,0.6); }
 
+/* ── Lightbox ────────────────────────────────────────────── */
+.lightbox {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(0,0,0,0.97);
+  display: none; align-items: center; justify-content: center;
+  cursor: zoom-out;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: 95vw; max-height: 95vh;
+  object-fit: contain; cursor: zoom-out;
+  user-select: none;
+}
+.lightbox-close {
+  position: absolute; top: 20px; right: 24px;
+  background: none; border: 1px solid rgba(255,255,255,0.25);
+  color: #fff; width: 36px; height: 36px; border-radius: 4px;
+  cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s;
+}
+.lightbox-close:hover { border-color: #fff; }
+.modal-gallery-img { cursor: zoom-in; }
+
 /* ── Sidebar backdrop (mobile) ───────────────────────────── */
 .sidebar-backdrop {
   display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99;
@@ -300,7 +328,7 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
   section { padding: 80px 24px; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .projects-grid { grid-template-columns: 1fr; }
-  .project-card:nth-child(3n+1) { grid-column: span 1; aspect-ratio: 4/3; }
+  .project-card { grid-column: span 1 !important; }
   .home-title { letter-spacing: -2px; }
   .home-scroll { display: none; }
   .modal-overlay { padding: 0; align-items: flex-end; }
@@ -387,6 +415,12 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
   </main>
 </div>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt=""/>
+</div>
+
 <!-- Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBackdrop(event)">
   <div class="modal" id="modal">
@@ -444,7 +478,11 @@ fetch('data.json?v=' + Date.now())
       </div>
       <div class="detail-block">
         <div class="detail-title">Contact</div>
-        <div class="detail-value"><a href="mailto:${data.site.email}">${data.site.email}</a></div>
+        <div class="detail-value">
+          <a href="mailto:${data.site.email}">${data.site.email}</a><br/>
+          <a href="https://www.linkedin.com/in/nisanth-menon-8182ab1a0/" target="_blank" rel="noopener">LinkedIn</a><br/>
+          <a href="assets/personal-info/2026Job CV.pdf" download>Download CV</a>
+        </div>
       </div>
     `;
 
@@ -454,17 +492,17 @@ fetch('data.json?v=' + Date.now())
   });
 
 // ── Render projects ───────────────────────────────────────
-function renderProjects() {
+async function renderProjects() {
   const grid = document.getElementById('projectsGrid');
   document.getElementById('worksCount').textContent = `${projects.length} Projects`;
   grid.innerHTML = projects.map((p, i) => {
     const thumb = p.images && p.images.length
-      ? (p.images[0].match(/\.mp4$/i)
+      ? (p.images[0].match(/\.(mp4|mov|webm)$/i)
           ? `<video class="project-img" src="${p.images[0]}" autoplay muted loop playsinline></video>`
           : `<img class="project-img" src="${p.images[0]}" alt="${p.name}" loading="lazy"/>`)
-      : `<div class="project-placeholder">${p.emoji}</div>`;
+      : `<div class="project-placeholder">${p.emoji || '□'}</div>`;
     return `
-      <div class="project-card" onclick="openModal(${i})">
+      <div class="project-card" data-i="${i}" onclick="openModal(${i})">
         ${thumb}
         <div class="project-overlay">
           <div class="project-name">${p.name}</div>
@@ -473,9 +511,50 @@ function renderProjects() {
         </div>
       </div>`;
   }).join('');
+
+  // Set aspect ratio and column span from actual image dimensions
+  const cards = grid.querySelectorAll('.project-card');
+  await Promise.all(projects.map((p, i) => {
+    const card = cards[i];
+    if (!p.images || !p.images.length) {
+      card.style.aspectRatio = '4/3';
+      return;
+    }
+    const src = p.images[0];
+    if (src.match(/\.(mp4|mov|webm)$/i)) {
+      card.style.aspectRatio = '16/9';
+      return;
+    }
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => {
+        const w = img.naturalWidth, h = img.naturalHeight;
+        card.style.aspectRatio = `${w}/${h}`;
+        resolve();
+      };
+      img.onerror = () => { card.style.aspectRatio = '4/3'; resolve(); };
+      img.src = src;
+    });
+  }));
 }
 
 // ── Modal ─────────────────────────────────────────────────
+function buildGallery(p) {
+  const items = p.images.map(src => {
+    if (src.match(/\.(mp4|mov|webm)$/i)) {
+      return `<video class="modal-gallery-img" src="${src}" autoplay muted loop playsinline></video>`;
+    }
+    return `<img class="modal-gallery-img" src="${src}" alt="${p.name}" loading="lazy" onclick="openLightbox('${src.replace(/'/g, "\\'")}')"/>`;
+  }).join('');
+  const arrows = p.images.length > 1 ? `
+    <button class="modal-gallery-arrow prev" onclick="galleryStep(-1)">&#8592;</button>
+    <button class="modal-gallery-arrow next" onclick="galleryStep(1)">&#8594;</button>` : '';
+  const dots = p.images.length > 1
+    ? `<div class="modal-gallery-dots">${p.images.map((_, idx) => `<div class="modal-gallery-dot${idx === 0 ? ' active' : ''}" onclick="galleryGoTo(${idx})"></div>`).join('')}</div>`
+    : '';
+  return `<div class="modal-gallery-wrap"><div class="modal-gallery" id="modalGallery">${items}</div>${arrows}</div>${dots}`;
+}
+
 function openModal(i) {
   const p = projects[i];
   document.getElementById('modalTitle').textContent = p.name;
@@ -485,20 +564,16 @@ function openModal(i) {
 
   // Images/video gallery or placeholder
   const mediaEl = document.getElementById('modalMedia');
-  if (p.images && p.images.length) {
-    const items = p.images.map(src => {
-      if (src.match(/\.mp4$/i)) {
-        return `<video class="modal-gallery-img" src="${src}" autoplay muted loop playsinline></video>`;
-      }
-      return `<img class="modal-gallery-img" src="${src}" alt="${p.name}" loading="lazy"/>`;
-    }).join('');
-    const arrows = p.images.length > 1 ? `
-      <button class="modal-gallery-arrow prev" onclick="galleryStep(-1)">&#8592;</button>
-      <button class="modal-gallery-arrow next" onclick="galleryStep(1)">&#8594;</button>` : '';
-    const dots = p.images.length > 1
-      ? `<div class="modal-gallery-dots">${p.images.map((_, idx) => `<div class="modal-gallery-dot${idx === 0 ? ' active' : ''}" onclick="galleryGoTo(${idx})"></div>`).join('')}</div>`
-      : '';
-    mediaEl.innerHTML = `<div class="modal-gallery-wrap"><div class="modal-gallery" id="modalGallery">${items}</div>${arrows}</div>${dots}`;
+  if (p.sketchfab) {
+    const embedUrl = p.sketchfab.includes('/embed') ? p.sketchfab
+      : p.sketchfab.replace('sketchfab.com/models/', 'sketchfab.com/models/').replace(/\/$/, '') + '/embed?autostart=1&ui_theme=dark&transparent=1';
+    mediaEl.innerHTML = `<iframe class="modal-sketchfab" src="${embedUrl}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`;
+    if (p.images && p.images.length) {
+      // also show images below the 3D viewer
+      mediaEl.innerHTML += buildGallery(p);
+    }
+  } else if (p.images && p.images.length) {
+    mediaEl.innerHTML = buildGallery(p);
     if (p.images.length > 1) {
       document.getElementById('modalGallery').addEventListener('scroll', updateDots);
     }
@@ -540,7 +615,22 @@ function updateDots() {
 function closeModalOnBackdrop(e) {
   if (e.target === document.getElementById('modalOverlay')) closeModal();
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
+    else closeModal();
+  }
+});
+
+// ── Lightbox ──────────────────────────────────────────────
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightboxImg').src = '';
+}
 
 // ── Navigation ────────────────────────────────────────────
 const mainEl = document.querySelector('.main');
@@ -590,7 +680,7 @@ function applyTheme(light) {
   themeLabel.textContent = light ? 'Light' : 'Dark';
 }
 
-applyTheme(localStorage.getItem('theme') === 'light');
+applyTheme(localStorage.getItem('theme') !== 'dark');
 
 themeToggle.addEventListener('change', () => {
   const isLight = themeToggle.checked;
