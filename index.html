@@ -138,9 +138,11 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
   color: var(--muted); margin-bottom: 24px; font-weight: 600;
 }
 .about-bio {
-  font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.75; color: var(--text);
+  font-size: 0.9rem; line-height: 1.75; color: var(--text);
   font-weight: 400;
 }
+.about-bio p { margin: 0 0 1.2em; }
+.about-bio p:last-child { margin-bottom: 0; }
 .about-details { display: flex; flex-direction: column; gap: 32px; }
 .detail-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 10px; }
 .detail-value { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
@@ -526,7 +528,9 @@ fetch('data.json?v=' + Date.now())
     document.getElementById('homeSubtitle').textContent = h.subtitle;
 
     // About
-    document.getElementById('aboutBio').textContent = data.about.bio;
+    const bioEl = document.getElementById('aboutBio');
+    const bioArr = Array.isArray(data.about.bio) ? data.about.bio : [data.about.bio];
+    bioEl.innerHTML = bioArr.map(p => `<p>${p}</p>`).join('');
     document.getElementById('aboutDetails').innerHTML = `
       <div class="detail-block">
         <div class="detail-title">Specialization</div>

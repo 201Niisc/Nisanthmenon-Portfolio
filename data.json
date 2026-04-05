@@ -13,16 +13,20 @@
     "subtitle": "Nisanth Menon — Parametric · Generative Designer · Digital Fabrication"
   },
   "about": {
-    "bio": "Architect and computational designer currently pursuing a Masters in Advanced Architecture at IAAC, Barcelona. With professional experience across firms in Kerala and Dubai, my background spans facade design, interior documentation, technical drawing coordination and AI-driven visualization across residential and commercial scales.\n\nAt IAAC, my work has pushed into more experimental territory, exploring how algorithmic logic and parametric modeling can reinterpret historical architectural languages, how infrastructure can be reimagined as ecological and social urbanism through computational simulation, and how lightweight structures can be designed for fabrication through physics-based form finding and environmental performance analysis. These projects have deepened my understanding of how computation can move beyond representation and become a generative tool for design thinking.\n\nI'm drawn to work that sits at the intersection of digital precision and spatial quality, where code, geometry and materiality inform each other from the earliest stages of design.",
+    "bio": [
+      "I am an Architect and a computational designer currently pursuing Masters in Advanced Architecture at IAAC (Institute of Advanced Architecture of Catalonia), Barcelona. With professional experience across firms in Kerala and Dubai, my background spans facade design, interior documentation, technical drawing coordination and AI-driven visualization across residential and commercial scales.",
+      "At IAAC, my work has pushed into more experimental territory, exploring how algorithmic logic and parametric modeling can reinterpret historical architectural languages, how infrastructure can be reimagined as ecological and social urbanism through computational simulation, and how lightweight structures can be designed for fabrication through physics-based form finding and environmental performance analysis. These projects have deepened my understanding of how computation can move beyond representation and become a generative tool for design thinking.",
+      "I'm drawn to work that sits at the intersection of digital precision and spatial quality, where code, geometry and materiality inform each other."
+    ],
     "specialization": [
       "Parametric Modeling",
       "Generative Workflows",
       "Digital Fabrication",
       "Advanced 3D Visualization"
     ],
-    "tools": "Rhino · Grasshopper · AutoCAD · AI Rendering · 3D Visualization · CNC/3D Printing"
+    "tools": "Rhino · Grasshopper · AutoCAD · AI Visualization · 3D Rendering · CNC/3D Printing"
   },
-  "projects": [
+  "archive": [
     {
       "name": "Innovation Hub",
       "year": "Documentation Phase",
@@ -41,6 +45,25 @@
       "folder": "assets/innovation-hub"
     },
     {
+      "name": "Test Fabrications",
+      "year": "IAAC",
+      "tags": [
+        "Robotic Fabrication",
+        "CNC Cutting",
+        "Laser Cutting",
+        "3D Printing",
+        "Programming and Computing"
+      ],
+      "desc": "",
+      "emoji": "",
+      "images": [],
+      "sketchfab": "",
+      "link": "",
+      "folder": "assets/test-fabrications"
+    }
+  ],
+  "projects": [
+    {
       "name": "Opera House",
       "year": "UG Thesis Project",
       "tags": [
@@ -54,8 +77,8 @@
       "images": [
         "assets/opera-house/SS 2.png",
         "assets/opera-house/Image1.png",
-        "assets/opera-house/SS 7.png",
         "assets/opera-house/SS 10.png",
+        "assets/opera-house/SS 7.png",
         "assets/opera-house/ELEVATION ILLUSTRATED.png",
         "assets/opera-house/SECTION ILLUSTRATED.png"
       ],
@@ -100,10 +123,10 @@
       ],
       "desc": "The tower is study of organic geometries associated with Antoni Gaudí that can be reinterpreted through contemporary computational design. Using parametric modeling techniques, the project translates principles such as radial symmetry, ruled surfaces, and growth based geometries into algorithmically generated forms that evolve through controlled variation rather than historical replication.",
       "images": [
+        "assets/gaudi-centenary-tower/Thumbnail.gif",
         "assets/gaudi-centenary-tower/04.3_Final_Param.gif",
         "assets/gaudi-centenary-tower/04.4_Final_Param.gif",
-        "assets/gaudi-centenary-tower/04_Final_Phase_Frames.gif",
-        "assets/gaudi-centenary-tower/Thumbnail.gif"
+        "assets/gaudi-centenary-tower/04_Final_Phase_Frames.gif"
       ],
       "sketchfab": "https://sketchfab.com/3d-models/sketchfab-model-2137e43797834b01993f660c2d8ffb1b",
       "link": "https://blog.iaac.net/the-gaudi-tower-podium/",
@@ -133,23 +156,6 @@
       "sketchfab": "https://sketchfab.com/3d-models/lvl-2-rooftop-pavilion-bf09a012e5f14aeea0eab4dfa07f2b71",
       "link": "https://blog.iaac.net/good-day-sunshine/",
       "folder": "assets/rooftop-pavilion"
-    },
-    {
-      "name": "Test Fabrications",
-      "year": "IAAC",
-      "tags": [
-        "Robotic Fabrication",
-        "CNC Cutting",
-        "Laser Cutting",
-        "3D Printing",
-        "Programming and Computing"
-      ],
-      "desc": "",
-      "emoji": "",
-      "images": [],
-      "sketchfab": "",
-      "link": "",
-      "folder": "assets/test-fabrications"
     }
   ]
 }

@@ -12,6 +12,9 @@ for project in data.get('projects', []):
     if not folder or not os.path.isdir(folder):
         continue
 
+    # Remember current thumbnail (first image)
+    current_thumbnail = project['images'][0] if project.get('images') else None
+
     # Get files in the order they were first committed (upload order)
     result = subprocess.run(
         ['git', 'log', '--diff-filter=A', '--name-only', '--format=', '--reverse', '--', f'{folder}/*'],
@@ -27,6 +30,11 @@ for project in data.get('projects', []):
         path = os.path.join(folder, fname).replace('\\', '/')
         if os.path.splitext(fname)[1].lower() in SUPPORTED and path not in images:
             images.append(path)
+
+    # Preserve manually set thumbnail
+    if current_thumbnail and current_thumbnail in images and images[0] != current_thumbnail:
+        images.remove(current_thumbnail)
+        images.insert(0, current_thumbnail)
 
     project['images'] = images
     print(f"{project['name']}: {len(images)} file(s)")
