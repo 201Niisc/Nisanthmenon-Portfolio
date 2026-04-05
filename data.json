@@ -3,7 +3,8 @@
     "name": "Nisanth Menon",
     "initials": "NM",
     "email": "nisanthmenon201@gmail.com",
-    "loaderName": "Nisanth Menon"
+    "loaderName": "Nisanth Menon",
+    "cvPath": "assets/personal-info/12026Job CV.pdf"
   },
   "home": {
     "titleLine1": "Architect",
@@ -12,7 +13,7 @@
     "subtitle": "Nisanth Menon — Parametric · Generative Designer · Digital Fabrication"
   },
   "about": {
-    "bio": "Computational design student specializing in parametric modeling and generative workflows using Rhino and Grasshopper. Interested in algorithmic design, digital fabrication, and integrating automation and computer vision into architectural systems. Eager to contribute to projects that challenge the boundaries of design while prioritizing sustainability and human-centered approaches.",
+    "bio": "Architect and computational designer currently pursuing a Masters in Advanced Architecture at IAAC, Barcelona. With professional experience across firms in Kerala and Dubai, my background spans facade design, interior documentation, technical drawing coordination and AI-driven visualization across residential and commercial scales.\n\nAt IAAC, my work has pushed into more experimental territory, exploring how algorithmic logic and parametric modeling can reinterpret historical architectural languages, how infrastructure can be reimagined as ecological and social urbanism through computational simulation, and how lightweight structures can be designed for fabrication through physics-based form finding and environmental performance analysis. These projects have deepened my understanding of how computation can move beyond representation and become a generative tool for design thinking.\n\nI'm drawn to work that sits at the intersection of digital precision and spatial quality, where code, geometry and materiality inform each other from the earliest stages of design.",
     "specialization": [
       "Parametric Modeling",
       "Generative Workflows",
@@ -51,10 +52,12 @@
       ],
       "desc": "This project explores an opera house design inspired by biomimicry, using natural systems to guide both form and performance. The form is developed from leaf structures to create a fluid geometry that enhances airflow and supports acoustic performance, ensuring balanced sound distribution and clarity within the space. The design integrates these principles to achieve a spatial experience that is both functionally efficient and acoustically refined.",
       "images": [
-         "assets/opera-house/SS 2.png",
+        "assets/opera-house/SS 2.png",
         "assets/opera-house/Image1.png",
         "assets/opera-house/SS 7.png",
-        "assets/opera-house/SS 10.png"
+        "assets/opera-house/SS 10.png",
+        "assets/opera-house/ELEVATION ILLUSTRATED.png",
+        "assets/opera-house/SECTION ILLUSTRATED.png"
       ],
       "sketchfab": "https://sketchfab.com/3d-models/audito-55d00dd7246b49e59a21dde9d5395fa1",
       "link": "",
@@ -97,10 +100,10 @@
       ],
       "desc": "The tower is study of organic geometries associated with Antoni Gaudí that can be reinterpreted through contemporary computational design. Using parametric modeling techniques, the project translates principles such as radial symmetry, ruled surfaces, and growth based geometries into algorithmically generated forms that evolve through controlled variation rather than historical replication.",
       "images": [
-        "assets/gaudi-centenary-tower/Thumbnail.gif",
         "assets/gaudi-centenary-tower/04.3_Final_Param.gif",
         "assets/gaudi-centenary-tower/04.4_Final_Param.gif",
-        "assets/gaudi-centenary-tower/04_Final_Phase_Frames.gif"
+        "assets/gaudi-centenary-tower/04_Final_Phase_Frames.gif",
+        "assets/gaudi-centenary-tower/Thumbnail.gif"
       ],
       "sketchfab": "https://sketchfab.com/3d-models/sketchfab-model-2137e43797834b01993f660c2d8ffb1b",
       "link": "https://blog.iaac.net/the-gaudi-tower-podium/",
@@ -119,17 +122,34 @@
       "desc": "Good Day Sunshine is a lightweight canopy that shapes space through light and structure. A flowing membrane stretches between fixed frames, forming a series of vaulted bays that create shade while allowing controlled openings for sunlight to pass through. The surface is organized by a triangulated structural network that gives strength to the thin skin and defines moments of enclosure and openness. As the sun moves, light filters through the patterned openings, casting shifting shadows and creating a dynamic atmosphere beneath the canopy.",
       "images": [
         "assets/rooftop-pavilion/1.png",
-        "assets/rooftop-pavilion/formation.gif",
         "assets/rooftop-pavilion/6.png",
         "assets/rooftop-pavilion/Plane.png",
         "assets/rooftop-pavilion/Section 2.png",
         "assets/rooftop-pavilion/Section 3.png",
         "assets/rooftop-pavilion/final turntable.gif",
+        "assets/rooftop-pavilion/formation.gif",
         "assets/rooftop-pavilion/node connection.gif"
       ],
-      "sketchfab": "",
+      "sketchfab": "https://sketchfab.com/3d-models/lvl-2-rooftop-pavilion-bf09a012e5f14aeea0eab4dfa07f2b71",
       "link": "https://blog.iaac.net/good-day-sunshine/",
       "folder": "assets/rooftop-pavilion"
+    },
+    {
+      "name": "Test Fabrications",
+      "year": "IAAC",
+      "tags": [
+        "Robotic Fabrication",
+        "CNC Cutting",
+        "Laser Cutting",
+        "3D Printing",
+        "Programming and Computing"
+      ],
+      "desc": "",
+      "emoji": "",
+      "images": [],
+      "sketchfab": "",
+      "link": "",
+      "folder": "assets/test-fabrications"
     }
   ]
 }

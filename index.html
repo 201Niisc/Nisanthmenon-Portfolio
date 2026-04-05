@@ -333,21 +333,67 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {
+  /* Sidebar */
   .hamburger { display: flex; }
   .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; border-right: none; }
   .sidebar.open { transform: translateX(0); box-shadow: 4px 0 40px rgba(0,0,0,0.5); }
-  .main { margin-left: 0; }
-  section { padding: 80px 24px; }
-  .about-grid { grid-template-columns: 1fr; gap: 40px; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .project-card { grid-column: span 1 !important; }
-  .home-title { letter-spacing: -2px; }
+
+  /* Layout */
+  .main {
+    margin-left: 0;
+    scroll-snap-type: none;
+  }
+  .main::after { display: none; }
+
+  /* Sections — natural flow, no snap */
+  section {
+    min-height: 100svh;
+    padding: 80px 20px 60px;
+    scroll-snap-align: none;
+    justify-content: flex-start;
+    padding-top: 100px;
+  }
+  #home { justify-content: center; }
+  #works { padding-top: 100px; }
+
+  /* Home */
+  .home-title { letter-spacing: -1px; }
   .home-scroll { display: none; }
+  .home-sub { margin-top: 24px; font-size: 0.78rem; }
+
+  /* About */
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+
+  /* Works */
+  .projects-grid { grid-template-columns: 1fr; gap: 2px; }
+  .project-card { grid-column: span 1 !important; aspect-ratio: 4/3 !important; }
+
+  /* Modal — single scroll bottom sheet */
   .modal-overlay { padding: 0; align-items: flex-end; }
-  .modal { width: 100vw; height: 92vh; grid-template-columns: 1fr !important; grid-template-rows: auto 1fr; border-radius: 12px 12px 0 0; }
-  .modal-left { height: auto; max-height: 40vh; border-right: none; border-bottom: 1px solid var(--border); padding: 24px; }
-  .modal-middle { height: 52vh; }
-  .modal-right { display: none !important; }
+  .modal {
+    width: 100vw;
+    height: 95svh;
+    display: block !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 16px 16px 0 0;
+    scrollbar-width: none;
+  }
+  .modal::-webkit-scrollbar { display: none; }
+  .modal-left, .modal-middle, .modal-right { display: none !important; }
+  .modal-mobile-scroll {
+    display: flex !important;
+    flex-direction: column;
+  }
+  .modal-mobile-scroll .mob-thumb { width: 100%; }
+  .modal-mobile-scroll .mob-thumb img,
+  .modal-mobile-scroll .mob-thumb video { width: 100%; height: auto; display: block; background: #fff; }
+  .modal-mobile-scroll .mob-info { padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+  .modal-mobile-scroll .mob-rest-images img,
+  .modal-mobile-scroll .mob-rest-images video { width: 100%; height: auto; display: block; background: #fff; margin-bottom: 2px; cursor: zoom-in; }
+  .modal-mobile-scroll .mob-sketchfab { width: 100%; aspect-ratio: 4/3; border: none; display: block; }
+  .modal-close { top: 12px; right: 12px; }
+  .modal-title { font-size: 1.1rem; }
 }
 </style>
 </head>
@@ -495,7 +541,7 @@ fetch('data.json?v=' + Date.now())
         <div class="detail-value">
           <a href="mailto:${data.site.email}">${data.site.email}</a><br/>
           <a href="https://www.linkedin.com/in/nisanth-menon-8182ab1a0/" target="_blank" rel="noopener">LinkedIn</a><br/>
-          <a href="assets/personal-info/2026Job CV.pdf" download>Download CV</a>
+          <a href="${data.site.cvPath}" download>Download CV</a>
         </div>
       </div>
     `;
@@ -565,36 +611,75 @@ function buildGallery(p) {
 
 function openModal(i) {
   const p = projects[i];
-  document.getElementById('modalTitle').textContent = p.name;
-  document.getElementById('modalYear').textContent = p.year;
-  document.getElementById('modalDesc').textContent = p.desc;
-  document.getElementById('modalTags').innerHTML = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
-
-  // Images panel (middle)
-  const mediaEl = document.getElementById('modalMedia');
-  const sketchfabEl = document.getElementById('modalSketchfab');
   const modalEl = document.getElementById('modal');
+  const isMobile = window.innerWidth <= 768;
 
-  if (p.images && p.images.length) {
-    mediaEl.innerHTML = buildGallery(p);
+  // Remove old mobile scroll if any
+  const oldMob = modalEl.querySelector('.modal-mobile-scroll');
+  if (oldMob) oldMob.remove();
+
+  if (isMobile) {
+    // Build single-scroll mobile layout
+    const embedUrl = p.sketchfab ? p.sketchfab.replace(/\/$/, '') + '/embed?autostart=1&ui_theme=dark&transparent=1' : '';
+    const thumb = p.images && p.images.length
+      ? (p.images[0].match(/\.(mp4|mov|webm)$/i)
+          ? `<video class="mob-thumb" src="${p.images[0]}" autoplay muted loop playsinline style="width:100%;height:auto;display:block;"></video>`
+          : `<div class="mob-thumb"><img src="${p.images[0]}" alt="${p.name}" style="width:100%;height:auto;display:block;background:#fff;" onclick="openLightbox('${p.images[0].replace(/'/g,"\\'")}')"/></div>`)
+      : `<div class="modal-placeholder">${p.emoji}</div>`;
+
+    const restImages = (p.images && p.images.length > 1)
+      ? `<div class="mob-rest-images">${p.images.slice(1).map(src =>
+          src.match(/\.(mp4|mov|webm)$/i)
+            ? `<video src="${src}" autoplay muted loop playsinline style="width:100%;height:auto;display:block;margin-bottom:2px;"></video>`
+            : `<img src="${src}" alt="${p.name}" loading="lazy" onclick="openLightbox('${src.replace(/'/g,"\\'")}')"/>`
+        ).join('')}</div>` : '';
+
+    const sketchfabHtml = embedUrl
+      ? `<iframe class="mob-sketchfab" src="${embedUrl}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>` : '';
+
+    const tagsHtml = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+    const linkHtml = p.link ? `<a class="modal-link" href="${p.link}" target="_blank" rel="noopener">View Project →</a>` : '';
+
+    const mob = document.createElement('div');
+    mob.className = 'modal-mobile-scroll';
+    mob.innerHTML = `
+      ${thumb}
+      <div class="mob-info">
+        <div><div class="modal-title">${p.name}</div><div class="modal-year">${p.year}</div></div>
+        <p class="modal-desc">${p.desc}</p>
+        <div><div class="modal-tags-label">Tools & Methods</div><div class="modal-tags">${tagsHtml}</div></div>
+        ${linkHtml}
+      </div>
+      ${restImages}
+      ${sketchfabHtml}
+    `;
+    modalEl.appendChild(mob);
+    modalEl.scrollTop = 0;
+
   } else {
-    mediaEl.innerHTML = `<div class="modal-placeholder">${p.emoji}</div>`;
-  }
+    // Desktop layout
+    document.getElementById('modalTitle').textContent = p.name;
+    document.getElementById('modalYear').textContent = p.year;
+    document.getElementById('modalDesc').textContent = p.desc;
+    document.getElementById('modalTags').innerHTML = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
 
-  // Sketchfab panel (right)
-  if (p.sketchfab) {
-    const embedUrl = p.sketchfab.includes('/embed') ? p.sketchfab
-      : p.sketchfab.replace(/\/$/, '') + '/embed?autostart=1&ui_theme=dark&transparent=1';
-    sketchfabEl.innerHTML = `<iframe class="modal-sketchfab" src="${embedUrl}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`;
-    modalEl.classList.add('has-sketchfab');
-  } else {
-    sketchfabEl.innerHTML = '';
-    modalEl.classList.remove('has-sketchfab');
-  }
+    const mediaEl = document.getElementById('modalMedia');
+    const sketchfabEl = document.getElementById('modalSketchfab');
 
-  // Link
-  const linkWrap = document.getElementById('modalLinkWrap');
-  linkWrap.innerHTML = p.link ? `<a class="modal-link" href="${p.link}" target="_blank" rel="noopener">View Project →</a>` : '';
+    mediaEl.innerHTML = (p.images && p.images.length) ? buildGallery(p) : `<div class="modal-placeholder">${p.emoji}</div>`;
+
+    if (p.sketchfab) {
+      const embedUrl = p.sketchfab.replace(/\/$/, '') + '/embed?autostart=1&ui_theme=dark&transparent=1';
+      sketchfabEl.innerHTML = `<iframe class="modal-sketchfab" src="${embedUrl}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`;
+      modalEl.classList.add('has-sketchfab');
+    } else {
+      sketchfabEl.innerHTML = '';
+      modalEl.classList.remove('has-sketchfab');
+    }
+
+    document.getElementById('modalLinkWrap').innerHTML = p.link
+      ? `<a class="modal-link" href="${p.link}" target="_blank" rel="noopener">View Project →</a>` : '';
+  }
 
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
