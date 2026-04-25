@@ -22,9 +22,10 @@
       "Parametric Modeling",
       "Generative Workflows",
       "Digital Fabrication",
+      "Robotic Workflows",
       "Advanced 3D Visualization"
     ],
-    "tools": "Rhino · Grasshopper · AutoCAD · AI Visualization · 3D Rendering · CNC/3D Printing"
+    "tools": "Rhino · Grasshopper · AutoCAD · AI Visualization · 3D Rendering · CNC/3D Printing · Robotic Fabrication"
   },
   "archive": [
     {
@@ -156,6 +157,20 @@
       "sketchfab": "https://sketchfab.com/3d-models/lvl-2-rooftop-pavilion-bf09a012e5f14aeea0eab4dfa07f2b71",
       "link": "https://blog.iaac.net/good-day-sunshine/",
       "folder": "assets/rooftop-pavilion"
+    },
+    {
+      "name": "Robotic Workflows",
+      "year": "2025-2026",
+      "tags": [
+        "Robotic Fabrication",
+        "Grasshopper"
+      ],
+      "desc": "",
+      "emoji": "",
+      "images": [],
+      "sketchfab": "",
+      "link": "",
+      "folder": "assets/robotic-workflows"
     }
   ]
 }
