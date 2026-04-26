@@ -327,6 +327,61 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
 .lightbox-close:hover { border-color: #fff; }
 .modal-gallery-img { cursor: zoom-in; }
 
+/* ── Sub-project image grid ──────────────────────────────── */
+.modal-gallery-grid {
+  display: grid;
+  width: 100%;
+  height: 88vh;
+  gap: 2px;
+}
+.modal-gallery-grid-item {
+  overflow: hidden;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-gallery-grid-item img,
+.modal-gallery-grid-item video {
+  width: 100%; height: 100%;
+  object-fit: contain; display: block; cursor: zoom-in;
+}
+
+/* ── Subgroup overlay ────────────────────────────────────── */
+.subgroup-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+  z-index: 400; display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.subgroup-overlay.open { display: flex; }
+.subgroup-modal {
+  background: var(--surface); border: 1px solid var(--border);
+  width: 90vw; max-width: 960px; max-height: 88vh;
+  overflow-y: auto; padding: 48px 40px 40px;
+  position: relative; scrollbar-width: none;
+}
+.subgroup-modal::-webkit-scrollbar { display: none; }
+.subgroup-header { margin-bottom: 32px; }
+.subgroup-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; letter-spacing: -1px; }
+.subgroup-year { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+.subgroup-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+
+/* ── Modal back button ───────────────────────────────────── */
+.modal-back {
+  position: absolute; top: 16px; left: 16px;
+  background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 6px 14px; border-radius: var(--radius); cursor: pointer;
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+  display: none; align-items: center; gap: 6px;
+  transition: border-color 0.2s, color 0.2s; z-index: 10;
+}
+.modal-back:hover { border-color: var(--text); color: var(--text); }
+.modal-back-mobile {
+  background: none; border: 1px solid var(--border); color: var(--muted);
+  padding: 6px 14px; border-radius: var(--radius); cursor: pointer;
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+  transition: border-color 0.2s, color 0.2s; width: fit-content;
+}
+.modal-back-mobile:hover { border-color: var(--text); color: var(--text); }
+
 /* ── Sidebar backdrop (mobile) ───────────────────────────── */
 .sidebar-backdrop {
   display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99;
@@ -335,6 +390,9 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {
+  .subgroup-grid { grid-template-columns: 1fr; }
+  .subgroup-modal { padding: 48px 20px 32px; }
+
   /* Sidebar */
   .hamburger { display: flex; }
   .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; border-right: none; }
@@ -483,10 +541,23 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
   <img id="lightboxImg" src="" alt=""/>
 </div>
 
+<!-- Subgroup overlay -->
+<div class="subgroup-overlay" id="subgroupOverlay" onclick="closeSubgroupOnBackdrop(event)">
+  <div class="subgroup-modal">
+    <button class="modal-close" onclick="closeSubgroup()">✕</button>
+    <div class="subgroup-header">
+      <div class="subgroup-title" id="subgroupTitle"></div>
+      <div class="subgroup-year" id="subgroupYear"></div>
+    </div>
+    <div class="subgroup-grid" id="subgroupGrid"></div>
+  </div>
+</div>
+
 <!-- Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBackdrop(event)">
   <div class="modal" id="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
+    <button class="modal-back" id="modalBack" onclick="backToSubgroup()"></button>
     <!-- Left: project info -->
     <div class="modal-left">
       <div class="modal-title" id="modalTitle"></div>
@@ -508,6 +579,8 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
 <script>
 gsap.registerPlugin(ScrollToPlugin);
 let projects = [];
+let currentSubgroup = null;
+let isFromSubgroup = false;
 
 // ── Load data.json and populate page ─────────────────────
 fetch('data.json?v=' + Date.now())
@@ -603,6 +676,19 @@ async function renderProjects() {
 }
 
 // ── Modal ─────────────────────────────────────────────────
+function buildGridGallery(p) {
+  const count = p.images.length;
+  const cols = count <= 1 ? 1 : count <= 3 ? count : count <= 4 ? 2 : 3;
+  const rows = Math.ceil(count / cols);
+  const items = p.images.map(src => {
+    const media = src.match(/\.(mp4|mov|webm)$/i)
+      ? `<video src="${src}" autoplay muted loop playsinline></video>`
+      : `<img src="${src}" alt="${p.name}" loading="lazy" onclick="openLightbox('${src.replace(/'/g, "\\'")}')"/>`;
+    return `<div class="modal-gallery-grid-item">${media}</div>`;
+  }).join('');
+  return `<div class="modal-gallery-grid" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr)">${items}</div>`;
+}
+
 function buildGallery(p) {
   const items = p.images.map(src => {
     if (src.match(/\.(mp4|mov|webm)$/i)) {
@@ -615,21 +701,87 @@ function buildGallery(p) {
 
 function openModal(i) {
   const p = projects[i];
+  if (p.isGroup && p.sub_projects) {
+    openSubgroup(p);
+    return;
+  }
+  openModalWithProject(p, false);
+}
+
+function openSubgroup(p) {
+  currentSubgroup = p;
+  document.getElementById('subgroupTitle').textContent = p.name;
+  document.getElementById('subgroupYear').textContent = p.year;
+  const grid = document.getElementById('subgroupGrid');
+  grid.innerHTML = p.sub_projects.map((sp, i) => {
+    const thumb = sp.images && sp.images.length
+      ? (sp.images[0].match(/\.(mp4|mov|webm)$/i)
+          ? `<video class="project-img" src="${sp.images[0]}" autoplay muted loop playsinline></video>`
+          : `<img class="project-img" src="${sp.images[0]}" alt="${sp.name}" loading="lazy"/>`)
+      : `<div class="project-placeholder">□</div>`;
+    return `
+      <div class="project-card" onclick="openSubProject(${i})">
+        ${thumb}
+        <div class="project-overlay">
+          <div class="project-name">${sp.name}</div>
+          <div class="project-year">${sp.year}</div>
+          <div class="project-tags">${sp.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('subgroupOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  mainEl.style.overflow = 'hidden';
+}
+
+function openSubProject(i) {
+  const sp = currentSubgroup.sub_projects[i];
+  openModalWithProject(sp, true);
+}
+
+function closeSubgroup() {
+  document.getElementById('subgroupOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  mainEl.style.overflow = '';
+}
+
+function closeSubgroupOnBackdrop(e) {
+  if (e.target === document.getElementById('subgroupOverlay')) closeSubgroup();
+}
+
+function backToSubgroup() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  isFromSubgroup = false;
+  openSubgroup(currentSubgroup);
+}
+
+function openModalWithProject(p, fromSubgroup) {
+  isFromSubgroup = fromSubgroup;
   const modalEl = document.getElementById('modal');
   const isMobile = window.innerWidth <= 768;
+
+  // Back button (desktop)
+  const backBtn = document.getElementById('modalBack');
+  if (backBtn) {
+    if (fromSubgroup) {
+      backBtn.style.display = 'flex';
+      backBtn.textContent = `← ${currentSubgroup.name}`;
+    } else {
+      backBtn.style.display = 'none';
+    }
+  }
 
   // Remove old mobile scroll if any
   const oldMob = modalEl.querySelector('.modal-mobile-scroll');
   if (oldMob) oldMob.remove();
 
   if (isMobile) {
-    // Build single-scroll mobile layout
     const embedUrl = p.sketchfab ? p.sketchfab.replace(/\/$/, '') + '/embed?autostart=1&ui_theme=dark&transparent=1' : '';
     const thumb = p.images && p.images.length
       ? (p.images[0].match(/\.(mp4|mov|webm)$/i)
           ? `<video class="mob-thumb" src="${p.images[0]}" autoplay muted loop playsinline style="width:100%;height:auto;display:block;"></video>`
           : `<div class="mob-thumb"><img src="${p.images[0]}" alt="${p.name}" style="width:100%;height:auto;display:block;background:#fff;" onclick="openLightbox('${p.images[0].replace(/'/g,"\\'")}')"/></div>`)
-      : `<div class="modal-placeholder">${p.emoji}</div>`;
+      : `<div class="modal-placeholder">${p.emoji || ''}</div>`;
 
     const restImages = (p.images && p.images.length > 1)
       ? `<div class="mob-rest-images">${p.images.slice(1).map(src =>
@@ -643,12 +795,14 @@ function openModal(i) {
 
     const tagsHtml = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
     const linkHtml = p.link ? `<a class="modal-link" href="${p.link}" target="_blank" rel="noopener">View Project →</a>` : '';
+    const backHtml = fromSubgroup ? `<button class="modal-back-mobile" onclick="backToSubgroup()">← ${currentSubgroup.name}</button>` : '';
 
     const mob = document.createElement('div');
     mob.className = 'modal-mobile-scroll';
     mob.innerHTML = `
       ${thumb}
       <div class="mob-info">
+        ${backHtml}
         <div><div class="modal-title">${p.name}</div><div class="modal-year">${p.year}</div></div>
         <p class="modal-desc">${p.desc}</p>
         <div><div class="modal-tags-label">Tools & Methods</div><div class="modal-tags">${tagsHtml}</div></div>
@@ -661,7 +815,6 @@ function openModal(i) {
     modalEl.scrollTop = 0;
 
   } else {
-    // Desktop layout
     document.getElementById('modalTitle').textContent = p.name;
     document.getElementById('modalYear').textContent = p.year;
     document.getElementById('modalDesc').textContent = p.desc;
@@ -670,7 +823,9 @@ function openModal(i) {
     const mediaEl = document.getElementById('modalMedia');
     const sketchfabEl = document.getElementById('modalSketchfab');
 
-    mediaEl.innerHTML = (p.images && p.images.length) ? buildGallery(p) : `<div class="modal-placeholder">${p.emoji}</div>`;
+    mediaEl.innerHTML = (p.images && p.images.length)
+      ? (fromSubgroup ? buildGridGallery(p) : buildGallery(p))
+      : `<div class="modal-placeholder">${p.emoji || ''}</div>`;
 
     if (p.sketchfab) {
       const embedUrl = p.sketchfab.replace(/\/$/, '') + '/embed?autostart=1&ui_theme=dark&transparent=1';
@@ -689,10 +844,12 @@ function openModal(i) {
   document.body.style.overflow = 'hidden';
   mainEl.style.overflow = 'hidden';
 }
+
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
   mainEl.style.overflow = '';
+  isFromSubgroup = false;
 }
 
 function galleryGoTo(idx) {
@@ -713,12 +870,19 @@ function updateDots() {
   document.querySelectorAll('.modal-gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
 }
 function closeModalOnBackdrop(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModal();
+  if (e.target === document.getElementById('modalOverlay')) {
+    if (isFromSubgroup) backToSubgroup();
+    else closeModal();
+  }
 }
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
-    else closeModal();
+    else if (document.getElementById('modalOverlay').classList.contains('open')) {
+      if (isFromSubgroup) backToSubgroup();
+      else closeModal();
+    }
+    else if (document.getElementById('subgroupOverlay').classList.contains('open')) closeSubgroup();
   }
 });
 

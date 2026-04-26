@@ -165,12 +165,69 @@
         "Robotic Fabrication",
         "Grasshopper"
       ],
-      "desc": "",
-      "emoji": "",
-      "images": [],
+      "desc": "A series of robotic fabrication experiments exploring milling, felting, clay printing, and painting workflows.",
+      "images": ["assets/robotic-workflows/Robotic_Column.gif"],
+      "isGroup": true,
       "sketchfab": "",
       "link": "",
-      "folder": "assets/robotic-workflows"
+      "folder": "assets/robotic-workflows",
+      "sub_projects": [
+        {
+          "name": "Robotic Milling",
+          "year": "2025-2026",
+          "tags": ["Robotic Fabrication", "Milling", "Grasshopper"],
+          "desc": "",
+          "images": [
+            "assets/robotic-workflows/Robotic_Column.gif",
+            "assets/robotic-workflows/ColumnSplit.gif",
+            "assets/robotic-workflows/Chosencolumns.gif",
+            "assets/robotic-workflows/milledcolumn.gif",
+            "assets/robotic-workflows/Fabricated Column.jpeg"
+          ],
+          "sketchfab": "",
+          "link": ""
+        },
+        {
+          "name": "Robotic Felting",
+          "year": "2025-2026",
+          "tags": ["Robotic Fabrication", "Needle Felting", "Grasshopper"],
+          "desc": "",
+          "images": [
+            "assets/robotic-workflows/Robotic_Felting.gif",
+            "assets/robotic-workflows/Felted Robot.jpg",
+            "assets/robotic-workflows/Felted Sheet.png",
+            "assets/robotic-workflows/Final Felting.mp4"
+          ],
+          "sketchfab": "",
+          "link": ""
+        },
+        {
+          "name": "Robotic Printing",
+          "year": "2025-2026",
+          "tags": ["Robotic Fabrication", "Clay Printing", "Grasshopper"],
+          "desc": "",
+          "images": [
+            "assets/robotic-workflows/Robotic_Printing.gif",
+            "assets/robotic-workflows/Robotic_Printing_Clay.mp4",
+            "assets/robotic-workflows/Printed Clay.png",
+            "assets/robotic-workflows/robotics_cup_video.mp4"
+          ],
+          "sketchfab": "",
+          "link": ""
+        },
+        {
+          "name": "Robotic Painting",
+          "year": "2025-2026",
+          "tags": ["Robotic Fabrication", "Painting", "Grasshopper"],
+          "desc": "",
+          "images": [
+            "assets/robotic-workflows/Robotic_Painting.gif",
+            "assets/robotic-workflows/Painting.jpeg"
+          ],
+          "sketchfab": "",
+          "link": ""
+        }
+      ]
     }
   ]
 }
