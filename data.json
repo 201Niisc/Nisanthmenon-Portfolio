@@ -176,7 +176,7 @@
           "name": "Robotic Milling",
           "year": "2025-2026",
           "tags": ["Robotic Fabrication", "Milling", "Grasshopper"],
-          "desc": "",
+          "desc": "A Gaudi inspired Paraboloid Column was designed in Grasshopper and fabricated using a robotic milling arm. The workflow explored how digital geometry can be directly translated into physical material through toolpath generation and six axis robotic machining.",
           "images": [
             "assets/robotic-workflows/Robotic_Column.gif",
             "assets/robotic-workflows/ColumnSplit.gif",
@@ -191,7 +191,7 @@
           "name": "Robotic Felting",
           "year": "2025-2026",
           "tags": ["Robotic Fabrication", "Needle Felting", "Grasshopper"],
-          "desc": "",
+          "desc": "A materiality test on wool by use of a Tufting gun to felt wool into various geometries to explore folding.",
           "images": [
             "assets/robotic-workflows/Robotic_Felting.gif",
             "assets/robotic-workflows/Felted Robot.jpg",
@@ -205,7 +205,7 @@
           "name": "Robotic Printing",
           "year": "2025-2026",
           "tags": ["Robotic Fabrication", "Clay Printing", "Grasshopper"],
-          "desc": "",
+          "desc": "A cup printed using clay with non planar geometry using the robot.",
           "images": [
             "assets/robotic-workflows/Robotic_Printing.gif",
             "assets/robotic-workflows/Robotic_Printing_Clay.mp4",
@@ -219,7 +219,7 @@
           "name": "Robotic Painting",
           "year": "2025-2026",
           "tags": ["Robotic Fabrication", "Painting", "Grasshopper"],
-          "desc": "",
+          "desc": "A pattern painted onto a surface using a robotic arm following computationally defined stroke trajectories.",
           "images": [
             "assets/robotic-workflows/Robotic_Painting.gif",
             "assets/robotic-workflows/Painting.jpeg"
