@@ -191,7 +191,7 @@
           "name": "Robotic Felting",
           "year": "2025-2026",
           "tags": ["Robotic Fabrication", "Needle Felting", "Grasshopper"],
-          "desc": "A materiality test on wool by use of a Tufting gun to felt wool into various geometries to explore folding.",
+          "desc": "A materiality test exploring how wool behaves under mechanical repetition. A tufting gun was used to felt wool into various folded geometries, investigating how a soft, pliable material can hold structural form through the accumulation of compressed fibers.",
           "images": [
             "assets/robotic-workflows/Robotic_Felting.gif",
             "assets/robotic-workflows/Felted Robot.jpg",
@@ -205,7 +205,7 @@
           "name": "Robotic Printing",
           "year": "2025-2026",
           "tags": ["Robotic Fabrication", "Clay Printing", "Grasshopper"],
-          "desc": "A cup printed using clay with non planar geometry using the robot.",
+          "desc": "A cup form was designed and printed in clay using a robotic arm, with toolpaths following non planar geometry. The experiment tested how clay extrusion through a six axis arm can produce curved, tilted layers that conventional vertical 3D printing cannot achieve.",
           "images": [
             "assets/robotic-workflows/Robotic_Printing.gif",
             "assets/robotic-workflows/Robotic_Printing_Clay.mp4",
@@ -219,7 +219,7 @@
           "name": "Robotic Painting",
           "year": "2025-2026",
           "tags": ["Robotic Fabrication", "Painting", "Grasshopper"],
-          "desc": "A pattern painted onto a surface using a robotic arm following computationally defined stroke trajectories.",
+          "desc": "A robotic arm was programmed to paint onto a surface using computationally defined stroke trajectories. The experiment explored how mark making, typically a manual and intuitive act, can be translated into spatial data and executed with mechanical precision to produce patterned surfaces.",
           "images": [
             "assets/robotic-workflows/Robotic_Painting.gif",
             "assets/robotic-workflows/Painting.jpeg"
