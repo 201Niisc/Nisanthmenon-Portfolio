@@ -94,7 +94,7 @@
         "Conceptual Project",
         "Futuristic",
         "Master's Project",
-        "Group Project",
+        "Group Project",   
         "Sustainability",
         "AI Renders"
       ],
@@ -159,6 +159,31 @@
       "folder": "assets/rooftop-pavilion"
     },
     {
+      "name": "ARCANA",
+      "year": "2026, Fabrication with AR",
+      "tags": [
+        "Android Application",
+        "AR",
+        "Unity",
+        "VR",
+        "Acoustic Simulation",
+        "Grasshopper",
+        "Pachyderm"
+      ],
+      "desc": "ARCANA (Augmented Reality for Computational Acoustic and Noise Analysis) algorithmically optimises the interior surfaces of rooms such as concert halls and auditoriums based on the relative positions of the sound source and receiver. Sound rays are projected from the source to reflect off the surfaces, whose mesh-like vertices are objectively modified so that reflected rays coincide with the receiver to achieve the maximum hit count. Once the surface mesh is optimised, AR previews the result projected onto a physical 'truss-like' frame, where the vertices help mold the framework to become identical to the simulated mesh.",
+      "images": [
+        "assets/arcana/Thumbnail.jpg",
+        "https://vimeo.com/1197109230",
+        "assets/arcana/FutureApplication.gif",
+        "assets/arcana/1slide.png",
+        "assets/arcana/2slide.png",
+        "assets/arcana/3slide.png"
+      ],
+      "sketchfab": "",
+      "link": "https://blog.iaac.net/arcana/",
+      "folder": "assets/arcana"
+    },
+    {
       "name": "Robotic Workflows",
       "year": "2025-2026",
       "tags": [
@@ -166,7 +191,23 @@
         "Grasshopper"
       ],
       "desc": "A series of robotic fabrication experiments exploring milling, felting, clay printing, and painting workflows.",
-      "images": ["assets/robotic-workflows/Robotic_Column.gif"],
+      "images": [
+        "assets/robotic-workflows/Robotic_Column.gif",
+        "assets/robotic-workflows/Chosencolumns.gif",
+        "assets/robotic-workflows/ColumnSplit.gif",
+        "assets/robotic-workflows/Fabricated Column.jpeg",
+        "assets/robotic-workflows/Felted Robot.jpg",
+        "assets/robotic-workflows/Felted Sheet.png",
+        "assets/robotic-workflows/Final Felting.mp4",
+        "assets/robotic-workflows/Painting.jpeg",
+        "assets/robotic-workflows/Printed Clay.png",
+        "assets/robotic-workflows/Robotic_Felting.gif",
+        "assets/robotic-workflows/Robotic_Painting.gif",
+        "assets/robotic-workflows/Robotic_Printing.gif",
+        "assets/robotic-workflows/Robotic_Printing_Clay.mp4",
+        "assets/robotic-workflows/milledcolumn.gif",
+        "assets/robotic-workflows/robotics_cup_video.mp4"
+      ],
       "isGroup": true,
       "sketchfab": "",
       "link": "",
@@ -175,8 +216,12 @@
         {
           "name": "Robotic Milling",
           "year": "2025-2026",
-          "tags": ["Robotic Fabrication", "Milling", "Grasshopper"],
-          "desc": "A Gaudi inspired Paraboloid Column was designed in Grasshopper and fabricated using a robotic milling arm. The workflow explored how digital geometry can be directly translated into physical material through toolpath generation and six axis robotic machining.",
+          "tags": [
+            "Robotic Fabrication",
+            "Milling",
+            "Grasshopper"
+          ],
+          "desc": "",
           "images": [
             "assets/robotic-workflows/Robotic_Column.gif",
             "assets/robotic-workflows/ColumnSplit.gif",
@@ -190,8 +235,12 @@
         {
           "name": "Robotic Felting",
           "year": "2025-2026",
-          "tags": ["Robotic Fabrication", "Needle Felting", "Grasshopper"],
-          "desc": "A materiality test exploring how wool behaves under mechanical repetition. A tufting gun was used to felt wool into various folded geometries, investigating how a soft, pliable material can hold structural form through the accumulation of compressed fibers.",
+          "tags": [
+            "Robotic Fabrication",
+            "Needle Felting",
+            "Grasshopper"
+          ],
+          "desc": "",
           "images": [
             "assets/robotic-workflows/Robotic_Felting.gif",
             "assets/robotic-workflows/Felted Robot.jpg",
@@ -204,8 +253,12 @@
         {
           "name": "Robotic Printing",
           "year": "2025-2026",
-          "tags": ["Robotic Fabrication", "Clay Printing", "Grasshopper"],
-          "desc": "A cup form was designed and printed in clay using a robotic arm, with toolpaths following non planar geometry. The experiment tested how clay extrusion through a six axis arm can produce curved, tilted layers that conventional vertical 3D printing cannot achieve.",
+          "tags": [
+            "Robotic Fabrication",
+            "Clay Printing",
+            "Grasshopper"
+          ],
+          "desc": "",
           "images": [
             "assets/robotic-workflows/Robotic_Printing.gif",
             "assets/robotic-workflows/Robotic_Printing_Clay.mp4",
@@ -218,8 +271,12 @@
         {
           "name": "Robotic Painting",
           "year": "2025-2026",
-          "tags": ["Robotic Fabrication", "Painting", "Grasshopper"],
-          "desc": "A robotic arm was programmed to paint onto a surface using computationally defined stroke trajectories. The experiment explored how mark making, typically a manual and intuitive act, can be translated into spatial data and executed with mechanical precision to produce patterned surfaces.",
+          "tags": [
+            "Robotic Fabrication",
+            "Painting",
+            "Grasshopper"
+          ],
+          "desc": "",
           "images": [
             "assets/robotic-workflows/Robotic_Painting.gif",
             "assets/robotic-workflows/Painting.jpeg"
@@ -230,4 +287,4 @@
       ]
     }
   ]
-}
+} 

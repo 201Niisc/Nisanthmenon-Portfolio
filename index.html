@@ -628,15 +628,37 @@ fetch('data.json?v=' + Date.now())
     renderProjects();
   });
 
+// ── Media helpers (external video embeds: Vimeo / YouTube) ─
+function externalEmbedUrl(src, bg) {
+  let m;
+  if ((m = String(src).match(/vimeo\.com\/(?:video\/)?(\d+)/i))) {
+    const params = bg
+      ? 'background=1&autoplay=1&muted=1&loop=1'
+      : 'autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0';
+    return `https://player.vimeo.com/video/${m[1]}?${params}`;
+  }
+  if ((m = String(src).match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+)/i))) {
+    const params = bg
+      ? `autoplay=1&mute=1&loop=1&controls=0&playlist=${m[1]}`
+      : `autoplay=1&mute=1&loop=1&playlist=${m[1]}`;
+    return `https://www.youtube.com/embed/${m[1]}?${params}`;
+  }
+  return null;
+}
+function isExternalVideo(src) { return externalEmbedUrl(src, false) !== null; }
+function isVideo(src) { return /\.(mp4|mov|webm)$/i.test(src) || isExternalVideo(src); }
+
 // ── Render projects ───────────────────────────────────────
 async function renderProjects() {
   const grid = document.getElementById('projectsGrid');
   document.getElementById('worksCount').textContent = `${projects.length} Projects`;
   grid.innerHTML = projects.map((p, i) => {
     const thumb = p.images && p.images.length
-      ? (p.images[0].match(/\.(mp4|mov|webm)$/i)
-          ? `<video class="project-img" src="${p.images[0]}" autoplay muted loop playsinline></video>`
-          : `<img class="project-img" src="${p.images[0]}" alt="${p.name}" loading="lazy"/>`)
+      ? (isExternalVideo(p.images[0])
+          ? `<iframe class="project-img" src="${externalEmbedUrl(p.images[0], true)}" allow="autoplay; fullscreen; picture-in-picture" style="border:none;pointer-events:none;"></iframe>`
+          : p.images[0].match(/\.(mp4|mov|webm)$/i)
+            ? `<video class="project-img" src="${p.images[0]}" autoplay muted loop playsinline></video>`
+            : `<img class="project-img" src="${p.images[0]}" alt="${p.name}" loading="lazy"/>`)
       : `<div class="project-placeholder">${p.emoji || '□'}</div>`;
     return `
       <div class="project-card" data-i="${i}" onclick="openModal(${i})">
@@ -658,7 +680,7 @@ async function renderProjects() {
       return;
     }
     const src = p.images[0];
-    if (src.match(/\.(mp4|mov|webm)$/i)) {
+    if (isVideo(src)) {
       card.style.aspectRatio = '16/9';
       return;
     }
@@ -681,9 +703,11 @@ function buildGridGallery(p) {
   const cols = count <= 1 ? 1 : count <= 3 ? count : count <= 4 ? 2 : 3;
   const rows = Math.ceil(count / cols);
   const items = p.images.map(src => {
-    const media = src.match(/\.(mp4|mov|webm)$/i)
-      ? `<video src="${src}" autoplay muted loop playsinline></video>`
-      : `<img src="${src}" alt="${p.name}" loading="lazy" onclick="openLightbox('${src.replace(/'/g, "\\'")}')"/>`;
+    const media = isExternalVideo(src)
+      ? `<iframe src="${externalEmbedUrl(src, false)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="border:none;width:100%;height:100%;aspect-ratio:16/9;"></iframe>`
+      : src.match(/\.(mp4|mov|webm)$/i)
+        ? `<video src="${src}" autoplay muted loop playsinline></video>`
+        : `<img src="${src}" alt="${p.name}" loading="lazy" onclick="openLightbox('${src.replace(/'/g, "\\'")}')"/>`;
     return `<div class="modal-gallery-grid-item">${media}</div>`;
   }).join('');
   return `<div class="modal-gallery-grid" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr)">${items}</div>`;
@@ -691,6 +715,9 @@ function buildGridGallery(p) {
 
 function buildGallery(p) {
   const items = p.images.map(src => {
+    if (isExternalVideo(src)) {
+      return `<iframe class="modal-gallery-img" src="${externalEmbedUrl(src, false)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="border:none;height:auto;aspect-ratio:16/9;cursor:default;"></iframe>`;
+    }
     if (src.match(/\.(mp4|mov|webm)$/i)) {
       return `<video class="modal-gallery-img" src="${src}" autoplay muted loop playsinline></video>`;
     }
@@ -715,9 +742,11 @@ function openSubgroup(p) {
   const grid = document.getElementById('subgroupGrid');
   grid.innerHTML = p.sub_projects.map((sp, i) => {
     const thumb = sp.images && sp.images.length
-      ? (sp.images[0].match(/\.(mp4|mov|webm)$/i)
-          ? `<video class="project-img" src="${sp.images[0]}" autoplay muted loop playsinline></video>`
-          : `<img class="project-img" src="${sp.images[0]}" alt="${sp.name}" loading="lazy"/>`)
+      ? (isExternalVideo(sp.images[0])
+          ? `<iframe class="project-img" src="${externalEmbedUrl(sp.images[0], true)}" allow="autoplay; fullscreen; picture-in-picture" style="border:none;pointer-events:none;"></iframe>`
+          : sp.images[0].match(/\.(mp4|mov|webm)$/i)
+            ? `<video class="project-img" src="${sp.images[0]}" autoplay muted loop playsinline></video>`
+            : `<img class="project-img" src="${sp.images[0]}" alt="${sp.name}" loading="lazy"/>`)
       : `<div class="project-placeholder">□</div>`;
     return `
       <div class="project-card" onclick="openSubProject(${i})">
@@ -778,16 +807,20 @@ function openModalWithProject(p, fromSubgroup) {
   if (isMobile) {
     const embedUrl = p.sketchfab ? p.sketchfab.replace(/\/$/, '') + '/embed?autostart=1&ui_theme=dark&transparent=1' : '';
     const thumb = p.images && p.images.length
-      ? (p.images[0].match(/\.(mp4|mov|webm)$/i)
-          ? `<video class="mob-thumb" src="${p.images[0]}" autoplay muted loop playsinline style="width:100%;height:auto;display:block;"></video>`
-          : `<div class="mob-thumb"><img src="${p.images[0]}" alt="${p.name}" style="width:100%;height:auto;display:block;background:#fff;" onclick="openLightbox('${p.images[0].replace(/'/g,"\\'")}')"/></div>`)
+      ? (isExternalVideo(p.images[0])
+          ? `<iframe class="mob-thumb" src="${externalEmbedUrl(p.images[0], false)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;display:block;"></iframe>`
+          : p.images[0].match(/\.(mp4|mov|webm)$/i)
+            ? `<video class="mob-thumb" src="${p.images[0]}" autoplay muted loop playsinline style="width:100%;height:auto;display:block;"></video>`
+            : `<div class="mob-thumb"><img src="${p.images[0]}" alt="${p.name}" style="width:100%;height:auto;display:block;background:#fff;" onclick="openLightbox('${p.images[0].replace(/'/g,"\\'")}')"/></div>`)
       : `<div class="modal-placeholder">${p.emoji || ''}</div>`;
 
     const restImages = (p.images && p.images.length > 1)
       ? `<div class="mob-rest-images">${p.images.slice(1).map(src =>
-          src.match(/\.(mp4|mov|webm)$/i)
-            ? `<video src="${src}" autoplay muted loop playsinline style="width:100%;height:auto;display:block;margin-bottom:2px;"></video>`
-            : `<img src="${src}" alt="${p.name}" loading="lazy" onclick="openLightbox('${src.replace(/'/g,"\\'")}')"/>`
+          isExternalVideo(src)
+            ? `<iframe src="${externalEmbedUrl(src, false)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;display:block;margin-bottom:2px;"></iframe>`
+            : src.match(/\.(mp4|mov|webm)$/i)
+              ? `<video src="${src}" autoplay muted loop playsinline style="width:100%;height:auto;display:block;margin-bottom:2px;"></video>`
+              : `<img src="${src}" alt="${p.name}" loading="lazy" onclick="openLightbox('${src.replace(/'/g,"\\'")}')"/>`
         ).join('')}</div>` : '';
 
     const sketchfabHtml = embedUrl
