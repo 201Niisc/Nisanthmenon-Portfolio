@@ -156,7 +156,7 @@ section { min-height: 100vh; padding: 80px 64px; display: flex; flex-direction: 
 .works-count { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
 
 .projects-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
   align-items: start;
 }
 .project-card {
@@ -670,31 +670,7 @@ async function renderProjects() {
         </div>
       </div>`;
   }).join('');
-
-  // Set aspect ratio and column span from actual image dimensions
-  const cards = grid.querySelectorAll('.project-card');
-  await Promise.all(projects.map((p, i) => {
-    const card = cards[i];
-    if (!p.images || !p.images.length) {
-      card.style.aspectRatio = '4/3';
-      return;
-    }
-    const src = p.images[0];
-    if (isVideo(src)) {
-      card.style.aspectRatio = '16/9';
-      return;
-    }
-    return new Promise(resolve => {
-      const img = new Image();
-      img.onload = () => {
-        const w = img.naturalWidth, h = img.naturalHeight;
-        card.style.aspectRatio = `${w}/${h}`;
-        resolve();
-      };
-      img.onerror = () => { card.style.aspectRatio = '4/3'; resolve(); };
-      img.src = src;
-    });
-  }));
+  // All cards share a uniform aspect ratio (set in CSS); images fill via object-fit: cover.
 }
 
 // ── Modal ─────────────────────────────────────────────────
